@@ -20,11 +20,11 @@ function Header() {
 
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <div className="bg-(--color-primary) text-white p-2 rounded-[10px]">
+          <div className="bg-(--color-primary) text-white p-2 rounded-lg">
             <FiUsers size={20} />
           </div>
           <span className="font-bold text-lg">
-            ConsigPro
+            ConsigGestorCRM
           </span>
         </div>
 
