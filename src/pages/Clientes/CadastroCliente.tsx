@@ -1,4 +1,5 @@
 import { FaUserPlus } from "react-icons/fa";
+import { LuSave } from "react-icons/lu";
 
 export default function CadastroCliente() {
     return (
@@ -13,7 +14,14 @@ export default function CadastroCliente() {
                         <span className="text-gray-500 text-sm">Cadastre um novo cliente potencial para empréstimo consignado</span>
                     </div>
                 </div>
+                
+                <div className="flex justify-end">
+                    <button className="cursor-pointer text-sm flex items-center gap-2 px-4 py-2 rounded-lg text-white bg-(--color-primary) hover:opacity-90 transition">
+                        <LuSave size={16} /> Salvar
+                    </button>
+                </div>
             </div>
+
         </div>
     )
 }
