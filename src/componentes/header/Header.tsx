@@ -23,7 +23,7 @@ function Header() {
           <div className="bg-(--color-primary) text-white p-2 rounded-lg">
             <FiUsers size={20} />
           </div>
-          <span className="font-bold text-lg">
+          <span className="font-bold text-lg text-gray-700">
             ConsigGestorCRM
           </span>
         </div>
