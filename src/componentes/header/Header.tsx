@@ -20,10 +20,10 @@ function Header() {
 
         {/* Logo */}
         <div className="flex items-center gap-3">
-          <div className="bg-[#193366] text-white p-2 rounded-[10px]">
+          <div className="bg-(--color-primary) text-white p-2 rounded-[10px]">
             <FiUsers size={20} />
           </div>
-          <span className="font-bold text-lg text-[#1B2232]">
+          <span className="font-bold text-lg">
             ConsigPro
           </span>
         </div>
@@ -38,7 +38,7 @@ function Header() {
                 key={item.path}
                 to={item.path}
                 className={clsx("flex items-center gap-2 px-4 py-2 rounded-[10px] text-sm transition", {
-                  "bg-gray-100 text-[#193366] font-medium": ativo,
+                  "bg-gray-100 text-(--color-primary) font-medium": ativo,
                   "text-gray-500 hover:bg-gray-50": !ativo
                 })}
               >
