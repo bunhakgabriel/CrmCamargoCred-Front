@@ -1,6 +1,6 @@
 import App from "../App";
-import CadastroCliente from "../pages/Clientes/CadastroCliente";
-import Dashboard from "../pages/Dashboard/Dashboard";
+import CadastroCliente from "../pages/cadastro-clientes/CadastroCliente";
+import Dashboard from "../pages/dashboard/Dashboard";
 import { PATH } from "./rotas";
 
 const routes = [

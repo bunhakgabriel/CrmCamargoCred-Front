@@ -1,7 +1,22 @@
 import { FaUserPlus } from "react-icons/fa";
 import { LuSave } from "react-icons/lu";
+import { yupResolver } from '@hookform/resolvers/yup';
+import useMask from "../../hooks/useMask";
+import { Controller, useForm } from "react-hook-form";
+import { clienteSchema, type IClienteForm } from "./schema/ClienteSchema";
 
 export default function CadastroCliente() {
+    const { mask } = useMask()
+
+    const { register, handleSubmit, control } = useForm<IClienteForm>({
+        resolver: yupResolver(clienteSchema),
+        mode: 'onBlur'
+    })
+
+    function onSubmit(data: IClienteForm) {
+        console.log(data)
+    }
+
     return (
         <div className="p-8 flex justify-center">
             <div className="flex flex-col gap-5 p-4 w-7/10 border border-gray-200 rounded-lg">
@@ -15,7 +30,7 @@ export default function CadastroCliente() {
                     </div>
                 </div>
 
-                <form className="flex flex-col gap-5">
+                <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
 
                     <div className="flex flex-col gap-3">
                         <h3 className="text-gray-500 font-semibold text-sm">DADOS PESSOAIS</h3>
@@ -23,12 +38,12 @@ export default function CadastroCliente() {
                         <div className="grid grid-cols-12 gap-3">
                             <div className="flex flex-col gap-1 col-span-12">
                                 <label className="text-xs text-gray-700">Nome Cliente</label>
-                                <input className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text" />
+                                <input {...register('nome')} className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text" />
                             </div>
 
                             <div className="flex flex-col gap-1 col-span-6">
                                 <label className="text-xs text-gray-700">CPF</label>
-                                <input className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text" />
+                                <input {...register('cpf')} className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text" />
                             </div>
 
                             <div className="flex flex-col gap-1 col-span-6">
@@ -43,19 +58,31 @@ export default function CadastroCliente() {
 
                             <div className="flex flex-col gap-1 col-span-4">
                                 <label className="text-xs text-gray-700">Fone</label>
-                                <input className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text" />
+                                <input {...register('telefone')} className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text" />
                             </div>
 
-                            <div className="flex flex-col gap-1 col-span-4">
-                                <label className="text-xs text-gray-700">Data de Nascimento</label>
-                                <input className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text" />
-                            </div>
+                            <Controller
+                                name="dataNascimento"
+                                control={control}
+                                defaultValue=""
+                                render={({ field }) => (
+                                    <div className="flex flex-col gap-1 col-span-4">
+                                        <label className="text-xs text-gray-700">Data de Nascimento</label>
+                                        <input
+                                            className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text"
+                                            value={field.value}
+                                            onBlur={field.onBlur}
+                                            onChange={e => field.onChange(mask(e.target.value, 'date'))}
+                                        />
+                                    </div>
+                                )}
+                            />
+
                         </div>
-
                     </div>
 
                     <div className="flex justify-end">
-                        <button className="cursor-pointer text-sm flex items-center gap-2 px-4 py-2 rounded-lg text-white bg-(--color-primary) hover:opacity-90 transition">
+                        <button type="submit" className="cursor-pointer text-sm flex items-center gap-2 px-4 py-2 rounded-lg text-white bg-(--color-primary) hover:opacity-90 transition">
                             <LuSave size={16} /> Salvar
                         </button>
                     </div>
