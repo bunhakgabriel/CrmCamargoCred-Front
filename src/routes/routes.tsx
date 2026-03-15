@@ -1,5 +1,7 @@
 import App from "../App";
+import CadastroCliente from "../pages/Clientes/CadastroCliente";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import { PATH } from "./rotas";
 
 const routes = [
   {
@@ -8,9 +10,13 @@ const routes = [
     errorElement: <h1>ERRO 404! Página não encontrada.</h1>,
     children: [
       {
-        path: '/',
+        path: PATH.PAINEL,
         element: <Dashboard />
-      }
+      },
+      {
+        path: PATH.NOVOCLIENTE,
+        element: <CadastroCliente />
+      },
     ]
   }
 ];
