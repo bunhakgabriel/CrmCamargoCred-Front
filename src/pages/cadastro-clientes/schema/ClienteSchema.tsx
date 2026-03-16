@@ -3,16 +3,23 @@ import validarCampo from "../../../utils/validar-campo";
 
 export const clienteSchema = Yup.object({
   nome: Yup.string().required('Campo obrigatório'),
-  cpf: Yup.string().required('Campo obrigatório'),
-  rg: Yup.string().required('Campo obrigatório'),
-  naturalidade: Yup.string().default(''),
-  dataNascimento: Yup.string().default(''),
-  telefone: Yup.string().default('')
-    .test('telefone', 'Telefone inválido', value => {
-      debugger
-      const result = value == '' ? true : validarCampo(value, "telefone")
+  cpf: Yup.string().required('Campo obrigatório')
+    .test('cpf', 'CPF inválido', value => {
+      const result = value == '' ? true : validarCampo(value, "cpf")
       return result === true
     }),
+  rg: Yup.string().required('Campo obrigatório'),
+  naturalidade: Yup.string().default(''),
+  dataNascimento: Yup.string().default('')
+    .test('dataNascimento', 'Data inválida', value => {
+      const result = value == '' ? true : validarCampo(value, "data")
+      return result === true
+    }),
+  telefone: Yup.string().default('')
+    .test('telefone', 'Telefone inválido', value => {
+      const result = value == '' ? true : validarCampo(value, "telefone")
+      return result === true
+    })
 });
 
 export type IClienteForm = Yup.InferType<typeof clienteSchema>;

@@ -37,29 +37,44 @@ export default function CadastroCliente() {
                         <h3 className="text-gray-500 font-semibold text-sm">DADOS PESSOAIS</h3>
 
                         <div className="grid grid-cols-12 gap-3">
-                            <div className="flex flex-col gap-1 col-span-12">
-                                <label className="text-xs text-gray-700">Nome Cliente</label>
-                                <input {...register('nome')} className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text" />
-                                {errors.nome && <span className='text-red-500 text-xs'>{errors.nome.message}</span>}
-                            </div>
 
-                            <div className="flex flex-col gap-1 col-span-6">
-                                <label className="text-xs text-gray-700">CPF</label>
-                                <input {...register('cpf')} className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text" />
-                                {errors.cpf && <span className='text-red-500 text-xs'>{errors.cpf.message}</span>}
-                            </div>
+                            <InputSimples
+                                col={12}
+                                label="Nome Cliente"
+                                name="nome"
+                                register={register}
+                                error={errors.nome}
+                                maxLength={100}
+                                mask={(value) => mask(value, 'apenasLetras')}
+                            />
 
-                            <div className="flex flex-col gap-1 col-span-6">
-                                <label className="text-xs text-gray-700">RG</label>
-                                <input {...register('rg')} className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text" />
-                                {errors.rg && <span className='text-red-500 text-xs'>{errors.rg.message}</span>}
-                            </div>
+                            <InputSimples
+                                col={6}
+                                label="CPF"
+                                name="cpf"
+                                register={register}
+                                error={errors.cpf}
+                                maxLength={14}
+                                mask={(value) => mask(value, 'cpf')}
+                            />
 
-                            <div className="flex flex-col gap-1 col-span-4">
-                                <label className="text-xs text-gray-700">Naturalidade</label>
-                                <input {...register('naturalidade')} className="h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm" type="text" />
-                                {errors.naturalidade && <span className='text-red-500 text-xs'>{errors.naturalidade.message}</span>}
-                            </div>
+                            <InputSimples
+                                col={6}
+                                label="RG"
+                                name="rg"
+                                register={register}
+                                error={errors.rg}
+                                maxLength={12}
+                                mask={(value) => mask(value, 'rg')}
+                            />
+
+                            <InputSimples
+                                col={6}
+                                label="Naturalidade"
+                                name="naturalidade"
+                                register={register}
+                                error={errors.naturalidade}
+                            />
 
                             <InputSimples
                                 col={4}

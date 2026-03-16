@@ -4,7 +4,8 @@ type Validacoes =
     'data' |
     'isAdult' |
     'numRegistroCnh' |
-    'validadeCnh'
+    'validadeCnh' |
+    'cpf'
 
 function validarEmail(value: string): true | string {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -19,10 +20,52 @@ function validarTelefone(value: string): true | string {
     return 'Telefone inválido'
 }
 
-function validarData(value: string): true | string {
-    if (value.length == 10) return true
+function validarCpf(value: string): true | string {
+    if (value.length == 14) return true
 
-    return 'Data inválida'
+    return 'Cpf inválido'
+}
+
+function validarData(value: string): true | string {
+    if (!value) return 'Data obrigatória'
+
+    const parts = value.split('/')
+
+    if (parts.length !== 3) return 'Data inválida'
+
+    const dia = Number(parts[0])
+    const mes = Number(parts[1])
+    const ano = Number(parts[2])
+
+    if (!dia || !mes || !ano) return 'Data inválida'
+
+    // limites básicos
+    if (mes < 1 || mes > 12) return 'Data inválida'
+    if (dia < 1 || dia > 31) return 'Data inválida'
+
+    const data = new Date(ano, mes - 1, dia)
+
+    // verifica se a data realmente existe
+    if (
+        data.getFullYear() !== ano ||
+        data.getMonth() !== mes - 1 ||
+        data.getDate() !== dia
+    ) {
+        return 'Data inválida'
+    }
+
+    const hoje = new Date()
+
+    // remove horas
+    hoje.setHours(0,0,0,0)
+
+    if (data > hoje) {
+        return 'Data não pode ser futura'
+    }
+
+    if (ano < 1910) return 'Data inválida'
+
+    return true
 }
 
 function isAdult(value: string): true | string {
@@ -84,6 +127,8 @@ export default function validarCampo(value: string, tipoValidacao?: Validacoes):
             return numRegistroCnh(value)
         case 'validadeCnh':
             return validarValidadeCNH(value)
+        case 'cpf':
+            return validarCpf(value)
         default:
             return true
     }

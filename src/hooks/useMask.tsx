@@ -1,7 +1,9 @@
 type tipoMask =
     'apenasLetras' |
     'telefone' |
-    'date' 
+    'date' |
+    'cpf' |
+    'rg'
 
 function useMask() {
     function apenasLetras(valor: string): string {
@@ -49,6 +51,30 @@ function useMask() {
         return digits
     }
 
+    function cpfMask(value: string): string {
+        if (value.length > 14) return value.substring(0, 14)
+
+        // remove tudo que não for número
+        let digits = value.replace(/\D/g, '')
+
+        if (digits.length <= 3) {
+            return digits
+        } else if (digits.length <= 6) {
+            return `${digits.slice(0, 3)}.${digits.slice(3)}`
+        } else if (digits.length <= 9) {
+            return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`
+        } else {
+            return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9, 11)}`
+        }
+    }
+
+    function rgMask(value: string): string {
+        return value
+            .toUpperCase()
+            .replace(/[^0-9X]/g, '')
+            .substring(0, 9)
+    }
+
     function mask(value: string, mask: tipoMask): string {
         switch (mask) {
             case 'apenasLetras':
@@ -57,6 +83,10 @@ function useMask() {
                 return telefoneMask(value)
             case 'date':
                 return dateMask(value)
+            case 'cpf':
+                return cpfMask(value)
+            case 'rg':
+                return rgMask(value)
             default:
                 return ''
         }
