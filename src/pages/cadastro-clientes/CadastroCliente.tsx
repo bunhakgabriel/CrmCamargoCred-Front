@@ -5,6 +5,8 @@ import useMask from "../../hooks/useMask";
 import { useForm } from "react-hook-form";
 import { clienteSchema, type IClienteForm } from "./schema/ClienteSchema";
 import InputSimples from "../../componentes/input-simples/InputSimples";
+import type { ICliente } from "../../interfaces/ICliente";
+import { parseClienteRequest } from "./parser/parseCliente";
 
 export default function CadastroCliente() {
     const { mask } = useMask()
@@ -15,7 +17,8 @@ export default function CadastroCliente() {
     })
 
     function onSubmit(data: IClienteForm) {
-        console.log(data)
+        const cliente: ICliente = parseClienteRequest(data)
+        console.log(cliente)
     }
 
     return (
