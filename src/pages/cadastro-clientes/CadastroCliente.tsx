@@ -69,7 +69,7 @@ export default function CadastroCliente() {
                             />
 
                             <InputSimples
-                                col={6}
+                                col={4}
                                 label="Naturalidade"
                                 name="naturalidade"
                                 register={register}
