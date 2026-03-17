@@ -9,18 +9,18 @@ export function parseClienteRequest(data: IClienteForm): ICliente {
         rg: data.rg.replace(/\D/g, ''),
         naturalidade: data.naturalidade.trim(),
         telefone: data.telefone.replace(/\D/g, ''),
-        dataNascimento: parseDate(data.dataNascimento)
+        dataNascimento: parseDateRequest(data.dataNascimento)
     }
 }
 
 export function parseClienteResponse(cliente: ICliente) {
     return {
         ...cliente,
-        dataNascimento: formatDate(cliente.dataNascimento)
+        dataNascimento: parseDateResponse(cliente.dataNascimento)
     }
 }
 
-function formatDate(date: Date | string) {
+function parseDateResponse(date: Date | string) {
     const d = new Date(date)
 
     const day = String(d.getDate()).padStart(2, '0')
@@ -30,7 +30,7 @@ function formatDate(date: Date | string) {
     return `${day}/${month}/${year}`
 }
 
-function parseDate(date: string): Date {
+function parseDateRequest(date: string): Date {
     const [day, month, year] = date.split('/').map(Number)
     return new Date(year, month - 1, day)
 }
