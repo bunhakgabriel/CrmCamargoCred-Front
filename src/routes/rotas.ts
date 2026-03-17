@@ -7,5 +7,5 @@ type Paths = {
 export const PATH: Paths = {
     PAINEL: '/',
     NOVOCLIENTE: '/novo-cliente',
-    CLIENTES: 'clientes'
+    CLIENTES: '/clientes'
 }

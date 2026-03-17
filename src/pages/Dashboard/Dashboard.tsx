@@ -11,7 +11,7 @@ export default function Dashboard() {
 
       {/* Título */}
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900">Painel</h1>
+        <h1 className="text-2xl font-semibold text-gray-700">Painel</h1>
         <p className="text-gray-500">
           Visão geral do seu sistema de clientes
         </p>
