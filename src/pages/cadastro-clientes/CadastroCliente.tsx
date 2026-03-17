@@ -51,65 +51,72 @@ export default function CadastroCliente() {
                     <div className="flex flex-col gap-3">
                         <h3 className="text-gray-500 font-semibold text-sm">DADOS PESSOAIS</h3>
 
-                        <div className="grid grid-cols-12 gap-3">
+                        <div className="flex flex-col gap-3">
+                            {/* <div className="grid grid-cols-12 gap-3"> */}
 
-                            <InputSimples
-                                col={12}
-                                label="Nome Cliente"
-                                name="nome"
-                                register={register}
-                                error={errors.nome}
-                                maxLength={100}
-                                mask={(value) => mask(value, 'apenasLetras')}
-                            />
+                            <div>
+                                <InputSimples
+                                    col={12}
+                                    label="Nome Cliente"
+                                    name="nome"
+                                    register={register}
+                                    error={errors.nome}
+                                    maxLength={100}
+                                    mask={(value) => mask(value, 'apenasLetras')}
+                                />
+                            </div>
 
-                            <InputSimples
-                                col={6}
-                                label="CPF"
-                                name="cpf"
-                                register={register}
-                                error={errors.cpf}
-                                maxLength={14}
-                                mask={(value) => mask(value, 'cpf')}
-                            />
+                            <div className="flex gap-3">
+                                <InputSimples
+                                    col={6}
+                                    label="CPF"
+                                    name="cpf"
+                                    register={register}
+                                    error={errors.cpf}
+                                    maxLength={14}
+                                    mask={(value) => mask(value, 'cpf')}
+                                />
 
-                            <InputSimples
-                                col={6}
-                                label="RG"
-                                name="rg"
-                                register={register}
-                                error={errors.rg}
-                                maxLength={12}
-                                mask={(value) => mask(value, 'rg')}
-                            />
+                                <InputSimples
+                                    col={6}
+                                    label="RG"
+                                    name="rg"
+                                    register={register}
+                                    error={errors.rg}
+                                    maxLength={12}
+                                    mask={(value) => mask(value, 'rg')}
+                                />
+                            </div>
 
-                            <InputSimples
-                                col={4}
-                                label="Naturalidade"
-                                name="naturalidade"
-                                register={register}
-                                error={errors.naturalidade}
-                            />
+                            <div className="flex gap-3">
+                                <InputSimples
+                                    col={4}
+                                    label="Naturalidade"
+                                    name="naturalidade"
+                                    register={register}
+                                    error={errors.naturalidade}
+                                />
 
-                            <InputSimples
-                                col={4}
-                                label="Fone"
-                                name="telefone"
-                                register={register}
-                                error={errors.telefone}
-                                maxLength={15}
-                                mask={(value) => mask(value, 'telefone')}
-                            />
+                                <InputSimples
+                                    col={4}
+                                    label="Fone"
+                                    name="telefone"
+                                    register={register}
+                                    error={errors.telefone}
+                                    maxLength={15}
+                                    mask={(value) => mask(value, 'telefone')}
+                                />
 
-                            <InputSimples
-                                col={4}
-                                label="Data de Nascimento"
-                                name="dataNascimento"
-                                register={register}
-                                error={errors.dataNascimento}
-                                maxLength={10}
-                                mask={(value) => mask(value, 'date')}
-                            />
+                                <InputSimples
+                                    col={4}
+                                    label="Data de Nascimento"
+                                    name="dataNascimento"
+                                    register={register}
+                                    error={errors.dataNascimento}
+                                    maxLength={10}
+                                    mask={(value) => mask(value, 'date')}
+                                />
+                            </div>
                         </div>
                     </div>
 

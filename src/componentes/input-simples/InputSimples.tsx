@@ -17,7 +17,6 @@ type InputSimplesProps<T extends FieldValues> = {
 }
 
 export default function InputSimples<T extends FieldValues>({
-  col,
   label,
   name,
   register,
@@ -35,7 +34,7 @@ export default function InputSimples<T extends FieldValues>({
   })
 
   return (
-    <div className={`flex flex-col gap-1 col-span-${col}`}>
+    <div className={`flex flex-col gap-1 w-full`}>
       <label className="text-xs text-gray-700">{label}</label>
 
       <input
