@@ -7,6 +7,8 @@ import { clienteSchema, type IClienteForm } from "./schema/ClienteSchema";
 import InputSimples from "../../componentes/input-simples/InputSimples";
 import type { ICliente } from "../../interfaces/ICliente";
 import { parseClienteRequest } from "./parser/parseCliente";
+import { useMutation } from "@tanstack/react-query";
+import { criarCliente } from "./services/clienteService";
 
 export default function CadastroCliente() {
     const { mask } = useMask()
@@ -16,9 +18,19 @@ export default function CadastroCliente() {
         mode: 'onChange'
     })
 
+    const mutation = useMutation({
+        mutationFn: (data: ICliente) => criarCliente(data),
+        onSuccess: () => {
+            console.log("Cliente cadastrado com sucesso")
+        },
+        onError: (error) => {
+            console.log("Erro ao cadastrar", error)
+        }
+    })
+
     function onSubmit(data: IClienteForm) {
         const cliente: ICliente = parseClienteRequest(data)
-        console.log(cliente)
+        mutation.mutate(cliente)
     }
 
     return (
