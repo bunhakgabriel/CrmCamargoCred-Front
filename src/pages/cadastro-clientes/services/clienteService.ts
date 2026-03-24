@@ -1,8 +1,9 @@
-import ApiRequest from "../../../api/ApiRequeste.ts";
+
+import api from "../../../api/api.ts";
+import type { IApiResponse } from "../../../interfaces/IApiResponse.ts";
 import type { ICliente } from "../../../interfaces/ICliente";
 
-export async function criarCliente(cliente: ICliente){
-    const api = new ApiRequest();
-    const data = await api.post<ICliente>('http://localhost:8000/cliente/cadastrar', cliente);
-    return data;
+export async function criarCliente(cliente: ICliente): Promise<IApiResponse<ICliente>> {
+    const response = await api.post<IApiResponse<ICliente>>('/cliente/cadastrar', cliente);
+    return response.data;
 }

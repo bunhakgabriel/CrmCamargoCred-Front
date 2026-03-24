@@ -9,22 +9,24 @@ import type { ICliente } from "../../interfaces/ICliente";
 import { parseClienteRequest } from "./parser/parseCliente";
 import { useMutation } from "@tanstack/react-query";
 import { criarCliente } from "./services/clienteService";
+import { toast } from "sonner";
 
 export default function CadastroCliente() {
     const { mask } = useMask()
 
-    const { register, handleSubmit, formState: { errors } } = useForm<IClienteForm>({
+    const { register, handleSubmit, formState: { errors }, reset } = useForm<IClienteForm>({
         resolver: yupResolver(clienteSchema),
         mode: 'onChange'
     })
 
     const mutation = useMutation({
-        mutationFn: (data: ICliente) => criarCliente(data),
+        mutationFn: (cliente: ICliente) => criarCliente(cliente),
         onSuccess: () => {
-            console.log("Cliente cadastrado com sucesso")
+            toast.success('Cliente cadastrado com sucesso!')
+            reset()
         },
-        onError: (error) => {
-            console.log("Erro ao cadastrar", error)
+        onError: (error: any) => {
+            toast.error(error.message)
         }
     })
 
