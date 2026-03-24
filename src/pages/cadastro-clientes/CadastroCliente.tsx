@@ -25,7 +25,7 @@ export default function CadastroCliente() {
             toast.success('Cliente cadastrado com sucesso!')
             reset()
         },
-        onError: (error: any) => {
+        onError: (error) => {
             toast.error(error.message)
         }
     })
