@@ -5,9 +5,20 @@ import { toast } from "sonner";
 import type { ICliente } from "../../../../interfaces/ICliente";
 import { type ICellRendererParams } from "ag-grid-community";
 
-export default function AcoesGridClientes(props: ICellRendererParams<ICliente> & { setClienteDelete: (cliente: ICliente) => void }) {
+export default function AcoesGridClientes(
+    props: ICellRendererParams<ICliente> &
+    {
+        setClienteDelete: (cliente: ICliente) => void,
+        handleEditCliente: (id: number) => void
+    }
+) {
     const handleView = () => toast.info(`Visualizar: ${props.data?.nome}`);
-    const handleEdit = () => toast.info(`Editar: ${props.data?.nome}`);
+    const handleEdit = () => {
+        if (props.data) {
+            props.handleEditCliente(props.data.id_cliente);
+        }
+    }
+    
     const handleDelete = () => {
         if (props.data) {
             props.setClienteDelete(props.data);

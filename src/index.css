@@ -11,3 +11,7 @@ body{
   --color-primary: #193366;
   --color-secondary: #339991;
 }
+
+.ag-root-wrapper {
+  z-index: 0 !important;
+}

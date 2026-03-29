@@ -1,30 +1,35 @@
 import { FaUserPlus } from "react-icons/fa";
 import { LuSave } from "react-icons/lu";
 import { yupResolver } from '@hookform/resolvers/yup';
-import useMask from "../../hooks/useMask";
+
 import { useForm } from "react-hook-form";
 import { clienteSchema, type IClienteForm } from "./schema/ClienteSchema";
 import InputSimples from "../../componentes/input-simples/InputSimples";
 import type { ICliente } from "../../interfaces/ICliente";
-import { parseClienteRequest } from "./parser/parseCliente";
+import { parseClienteRequest, parseClienteResponse } from "./parser/parseCliente";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ClienteService from "./services/clienteService";
 import { toast } from "sonner";
+import { mask } from "../../utils/masks";
+import clsx from "clsx";
 
-export default function CadastroCliente() {
-    const { mask } = useMask()
+type cadastroClienteProps = {
+    cliente: ICliente | null
+}
 
+export default function CadastroCliente({ cliente }: cadastroClienteProps) {
     const queryClient = useQueryClient();
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IClienteForm>({
         resolver: yupResolver(clienteSchema),
-        mode: 'onChange'
+        mode: 'onChange',
+        defaultValues: cliente ? parseClienteResponse(cliente) : {}
     })
 
     const mutation = useMutation({
-        mutationFn: (cliente: ICliente) => ClienteService.criarCliente(cliente),
+        mutationFn: (cliente: ICliente) => ClienteService.salvarCliente(cliente),
         onSuccess: () => {
-            toast.success('Cliente cadastrado com sucesso!')
+            toast.success('Cliente salvo com sucesso!')
             queryClient.invalidateQueries({ queryKey: ['clientes'] });
             reset()
         },
@@ -40,14 +45,26 @@ export default function CadastroCliente() {
 
     return (
         <div className="p-8 flex justify-center">
-            <div className="flex flex-col gap-5 p-4 w-7/10 border border-gray-200 rounded-lg">
+            <div className={clsx("flex flex-col gap-5 p-4 border border-gray-200 rounded-lg", {
+                'w-7/10': !cliente,
+                'w-full': cliente
+            })}>
                 <div className="flex items-center gap-3">
                     <div className="bg-(--color-secondary) w-12 h-12 rounded-lg flex justify-center items-center">
                         <FaUserPlus color="white" size={20} />
                     </div>
                     <div>
-                        <h1 className="font-semibold text-2xl text-gray-700">Novo Cliente</h1>
-                        <span className="text-gray-500 text-sm">Cadastre um novo cliente potencial para empréstimo consignado</span>
+                        {!cliente ? (
+                            <>
+                                <h1 className="font-semibold text-2xl text-gray-700">Novo Cliente</h1>
+                                <span className="text-gray-500 text-sm">Cadastre um novo cliente potencial para empréstimo consignado</span>
+                            </>
+                        ) : (
+                            <>
+                                <h1 className="font-semibold text-2xl text-gray-700">Editar Cliente</h1>
+                                <span className="text-gray-500 text-sm">Edite um cliente existente</span>
+                            </>
+                        )}
                     </div>
                 </div>
 

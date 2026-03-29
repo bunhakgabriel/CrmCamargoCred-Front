@@ -12,6 +12,7 @@ import type { ICliente } from "../../../../interfaces/ICliente";
 import ClienteService from "../../../cadastro-clientes/services/clienteService";
 import ConfirmDelete from "../../../../componentes/confirm-delete/ConfirmDelete";
 import AcoesGridClientes from "./AcoesGridClientes";
+import EditarCliente from "../EditarCliente";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -21,8 +22,9 @@ const dateFormatter = (params: { value: Date }) => {
     return d.toLocaleDateString("pt-BR");
 };
 
-export default function GridClientes(){
+export default function GridClientes() {
     const [clienteDelete, setClienteDelete] = useState<ICliente | null>(null);
+    const [clienteEdit, setClienteEdit] = useState<ICliente | null>(null);
 
     const queryClient = useQueryClient();
 
@@ -32,7 +34,7 @@ export default function GridClientes(){
     });
 
     const mutationDelete = useMutation({
-        mutationFn: (id: number) => ClienteService.deletarCliente(id),
+        mutationFn: ClienteService.deletarCliente,
         onSuccess: () => {
             toast.success("Cliente excluído com sucesso!");
             queryClient.invalidateQueries({ queryKey: ['clientes'] });
@@ -44,10 +46,25 @@ export default function GridClientes(){
         }
     });
 
+    const mutationGetCliente = useMutation({
+        mutationFn: ClienteService.buscarClientePorId,
+        onSuccess: (data) => {
+            setClienteEdit(data.data)
+        },
+        onError: () => {
+            toast.error("Erro ao buscar informações do cliente!")
+            setClienteEdit(null);
+        }
+    })
+
     const handleDeleteCliente = () => {
         if (clienteDelete) {
             mutationDelete.mutate(clienteDelete.id_cliente);
         }
+    }
+
+    const handleEditCliente = (id: number) => {
+            mutationGetCliente.mutate(id);
     }
 
     const columnDefs = useMemo<ColDef<ICliente>[]>(
@@ -62,7 +79,8 @@ export default function GridClientes(){
                 headerName: "Ações",
                 cellRenderer: AcoesGridClientes,
                 cellRendererParams: {
-                    setClienteDelete: setClienteDelete
+                    setClienteDelete: setClienteDelete,
+                    handleEditCliente: handleEditCliente
                 },
                 width: 130,
                 sortable: false,
@@ -100,6 +118,10 @@ export default function GridClientes(){
                 open={!!clienteDelete}
                 onCancel={() => setClienteDelete(null)}
                 onConfirm={handleDeleteCliente}
+            />
+            <EditarCliente
+                cliente={clienteEdit}
+                onClose={() => setClienteEdit(null)}
             />
         </div>
     );

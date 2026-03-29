@@ -1,9 +1,11 @@
 import type { ICliente } from "../../../interfaces/ICliente"
+import { mask } from "../../../utils/masks"
 import type { IClienteForm } from "../schema/ClienteSchema"
 
 
 export function parseClienteRequest(data: IClienteForm): ICliente {
     return {
+        id_cliente: data.id_cliente,
         nome: data.nome.trim(),
         cpf: data.cpf.replace(/\D/g, ''),
         rg: data.rg.replace(/\D/g, ''),
@@ -13,9 +15,11 @@ export function parseClienteRequest(data: IClienteForm): ICliente {
     }
 }
 
-export function parseClienteResponse(cliente: ICliente) {
+export function parseClienteResponse(cliente: ICliente): IClienteForm {
     return {
         ...cliente,
+        telefone: mask(cliente.telefone, 'telefone'),
+        cpf: mask(cliente.cpf, 'cpf'),
         data_nascimento: parseDateResponse(cliente.data_nascimento)
     }
 }

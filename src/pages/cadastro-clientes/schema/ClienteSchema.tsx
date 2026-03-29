@@ -1,8 +1,8 @@
 import * as Yup from "yup";
 import validarCampo from "../../../utils/validar-campo";
-import type { data } from "react-router-dom";
 
 export const clienteSchema = Yup.object({
+  id_cliente: Yup.number().default(0),
   nome: Yup.string().required('Campo obrigatório'),
   cpf: Yup.string().required('Campo obrigatório')
     .test('cpf', 'CPF inválido', value => {
