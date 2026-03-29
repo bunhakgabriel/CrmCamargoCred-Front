@@ -2,7 +2,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../routes/rotas";
-import Grid from "../../componentes/grid/Grid";
+import GridClientes from "./componentes/grid-clientes/GridClientes";
 
 export default function Clientes() {
     const navigate = useNavigate()
@@ -37,8 +37,7 @@ export default function Clientes() {
                 </div>
             </div>
 
-            <Grid />
-
+            <GridClientes />
         </div>
     )
 }

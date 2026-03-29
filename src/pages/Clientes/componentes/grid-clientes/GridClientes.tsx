@@ -4,43 +4,16 @@ import {
     AllCommunityModule,
     ModuleRegistry,
     type ColDef,
-    type ICellRendererParams,
     themeAlpine,
 } from "ag-grid-community";
 import { toast } from "sonner";
-import { FiEye } from "react-icons/fi";
-import { LuPencil } from "react-icons/lu";
-import { MdOutlineDeleteOutline } from "react-icons/md";
-import type { ICliente } from "../../interfaces/ICliente";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import ClienteService from "../../pages/cadastro-clientes/services/clienteService";
-import ConfirmDelete from "../confirm-delete/ConfirmDelete";
+import type { ICliente } from "../../../../interfaces/ICliente";
+import ClienteService from "../../../cadastro-clientes/services/clienteService";
+import ConfirmDelete from "../../../../componentes/confirm-delete/ConfirmDelete";
+import AcoesGridClientes from "./AcoesGridClientes";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
-
-const ActionsCellRenderer = (props: ICellRendererParams<ICliente> & { setClienteDelete: (cliente: ICliente) => void }) => {
-    const handleView = () => toast.info(`Visualizar: ${props.data?.nome}`);
-    const handleEdit = () => toast.info(`Editar: ${props.data?.nome}`);
-    const handleDelete = () => {
-        if (props.data) {
-            props.setClienteDelete(props.data);
-        }
-    };
-
-    return (
-        <div className="flex items-center gap-2 h-full">
-            <button onClick={handleView} className="cursor-pointer p-1.5 rounded-md text-primary hover:bg-accent transition-colors" title="Visualizar">
-                <FiEye className="w-4 h-4" />
-            </button>
-            <button onClick={handleEdit} className="cursor-pointer p-1.5 rounded-md text-primary hover:bg-accent transition-colors" title="Editar">
-                <LuPencil className="w-4 h-4" />
-            </button>
-            <button onClick={handleDelete} className="cursor-pointer p-1.5 rounded-md text-destructive hover:bg-destructive/10 transition-colors" title="Excluir">
-                <MdOutlineDeleteOutline className="w-4 h-4" />
-            </button>
-        </div>
-    );
-};
 
 const dateFormatter = (params: { value: Date }) => {
     if (!params.value) return "";
@@ -48,7 +21,7 @@ const dateFormatter = (params: { value: Date }) => {
     return d.toLocaleDateString("pt-BR");
 };
 
-const ClienteGrid = () => {
+export default function GridClientes(){
     const [clienteDelete, setClienteDelete] = useState<ICliente | null>(null);
 
     const queryClient = useQueryClient();
@@ -71,7 +44,7 @@ const ClienteGrid = () => {
         }
     });
 
-    const confirmOnDelete = () => {
+    const handleDeleteCliente = () => {
         if (clienteDelete) {
             mutationDelete.mutate(clienteDelete.id_cliente);
         }
@@ -87,7 +60,7 @@ const ClienteGrid = () => {
             { field: "data_nascimento", headerName: "Nascimento", flex: 1.2, minWidth: 120, valueFormatter: dateFormatter },
             {
                 headerName: "Ações",
-                cellRenderer: ActionsCellRenderer,
+                cellRenderer: AcoesGridClientes,
                 cellRendererParams: {
                     setClienteDelete: setClienteDelete
                 },
@@ -126,10 +99,10 @@ const ClienteGrid = () => {
             <ConfirmDelete
                 open={!!clienteDelete}
                 onCancel={() => setClienteDelete(null)}
-                onConfirm={confirmOnDelete}
+                onConfirm={handleDeleteCliente}
             />
         </div>
     );
 };
 
-export default ClienteGrid;
+
