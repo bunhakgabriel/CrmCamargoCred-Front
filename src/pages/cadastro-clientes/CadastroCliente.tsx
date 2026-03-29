@@ -7,12 +7,14 @@ import { clienteSchema, type IClienteForm } from "./schema/ClienteSchema";
 import InputSimples from "../../componentes/input-simples/InputSimples";
 import type { ICliente } from "../../interfaces/ICliente";
 import { parseClienteRequest } from "./parser/parseCliente";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ClienteService from "./services/clienteService";
 import { toast } from "sonner";
 
 export default function CadastroCliente() {
     const { mask } = useMask()
+
+    const queryClient = useQueryClient();
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IClienteForm>({
         resolver: yupResolver(clienteSchema),
@@ -23,6 +25,7 @@ export default function CadastroCliente() {
         mutationFn: (cliente: ICliente) => ClienteService.criarCliente(cliente),
         onSuccess: () => {
             toast.success('Cliente cadastrado com sucesso!')
+            queryClient.invalidateQueries({ queryKey: ['clientes'] });
             reset()
         },
         onError: (error) => {

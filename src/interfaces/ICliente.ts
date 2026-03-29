@@ -1,5 +1,5 @@
 export interface ICliente {
-    id_cliente?: number
+    id_cliente: number
     nome: string
     cpf: string
     rg: string

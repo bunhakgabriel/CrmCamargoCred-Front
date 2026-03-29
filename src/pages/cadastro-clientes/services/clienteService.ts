@@ -13,6 +13,11 @@ const ClienteService = {
     buscarClientes: async (): Promise<IApiResponse<ICliente[]>> => {
         const response = await api.get<IApiResponse<ICliente[]>>('/cliente/buscar');
         return response.data;
+    },
+
+    deletarCliente: async (id: number): Promise<IApiResponse<null>> => {
+        const response = await api.delete<IApiResponse<null>>('/cliente/deletar/' + id);
+        return response.data;
     }
 };
 
