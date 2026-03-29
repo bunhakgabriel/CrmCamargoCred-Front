@@ -147,10 +147,15 @@ export default function CadastroCliente({ cliente, onCloseModal }: cadastroClien
                         </div>
                     </div>
 
-                    <div className="flex justify-end">
+                    <div className="flex gap-2 justify-end">
                         <button type="submit" className="cursor-pointer text-sm flex items-center gap-2 px-4 py-2 rounded-lg text-white bg-(--color-primary) hover:opacity-90 transition">
                             <LuSave size={16} /> Salvar
                         </button>
+                        {cliente && (
+                            <button onClick={onCloseModal} className="cursor-pointer text-sm flex items-center gap-2 px-4 py-2 rounded-lg text-white bg-(--color-tertiary) hover:opacity-90 transition">
+                                Cancelar
+                            </button>
+                        )}
                     </div>
                 </form>
 

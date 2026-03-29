@@ -10,6 +10,7 @@ body{
 :root {
   --color-primary: #193366;
   --color-secondary: #339991;
+  --color-tertiary: #ef4444;
 }
 
 .ag-root-wrapper {
