@@ -15,9 +15,10 @@ import clsx from "clsx";
 
 type cadastroClienteProps = {
     cliente: ICliente | null
+    onCloseModal?: () => void
 }
 
-export default function CadastroCliente({ cliente }: cadastroClienteProps) {
+export default function CadastroCliente({ cliente, onCloseModal }: cadastroClienteProps) {
     const queryClient = useQueryClient();
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IClienteForm>({
@@ -32,6 +33,10 @@ export default function CadastroCliente({ cliente }: cadastroClienteProps) {
             toast.success('Cliente salvo com sucesso!')
             queryClient.invalidateQueries({ queryKey: ['clientes'] });
             reset()
+
+            if (cliente && onCloseModal) {
+                onCloseModal()
+            }
         },
         onError: (error) => {
             toast.error(error.message)

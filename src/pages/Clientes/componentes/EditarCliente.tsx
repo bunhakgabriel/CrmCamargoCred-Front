@@ -10,7 +10,7 @@ type EditarClienteProps = {
 export default function EditarCliente({ cliente, onClose }: EditarClienteProps) {
   return (
     <Modal isOpen={!!cliente} onRequestClose={onClose}>
-        <CadastroCliente cliente={cliente} />
+        <CadastroCliente onCloseModal={onClose} cliente={cliente} />
     </Modal>
   );
 }
