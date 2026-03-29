@@ -9,14 +9,14 @@ export function parseClienteRequest(data: IClienteForm): ICliente {
         rg: data.rg.replace(/\D/g, ''),
         naturalidade: data.naturalidade.trim(),
         telefone: data.telefone.replace(/\D/g, ''),
-        dataNascimento: parseDateRequest(data.dataNascimento)
+        data_nascimento: parseDateRequest(data.data_nascimento)
     }
 }
 
 export function parseClienteResponse(cliente: ICliente) {
     return {
         ...cliente,
-        dataNascimento: parseDateResponse(cliente.dataNascimento)
+        data_nascimento: parseDateResponse(cliente.data_nascimento)
     }
 }
 

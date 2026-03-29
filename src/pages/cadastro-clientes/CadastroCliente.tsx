@@ -8,7 +8,7 @@ import InputSimples from "../../componentes/input-simples/InputSimples";
 import type { ICliente } from "../../interfaces/ICliente";
 import { parseClienteRequest } from "./parser/parseCliente";
 import { useMutation } from "@tanstack/react-query";
-import { criarCliente } from "./services/clienteService";
+import ClienteService from "./services/clienteService";
 import { toast } from "sonner";
 
 export default function CadastroCliente() {
@@ -20,7 +20,7 @@ export default function CadastroCliente() {
     })
 
     const mutation = useMutation({
-        mutationFn: (cliente: ICliente) => criarCliente(cliente),
+        mutationFn: (cliente: ICliente) => ClienteService.criarCliente(cliente),
         onSuccess: () => {
             toast.success('Cliente cadastrado com sucesso!')
             reset()
@@ -112,9 +112,9 @@ export default function CadastroCliente() {
                                 <InputSimples
                                     col={4}
                                     label="Data de Nascimento"
-                                    name="dataNascimento"
+                                    name="data_nascimento"
                                     register={register}
-                                    error={errors.dataNascimento}
+                                    error={errors.data_nascimento}
                                     maxLength={10}
                                     mask={(value) => mask(value, 'date')}
                                 />

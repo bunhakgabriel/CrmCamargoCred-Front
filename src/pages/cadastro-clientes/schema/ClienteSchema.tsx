@@ -1,5 +1,6 @@
 import * as Yup from "yup";
 import validarCampo from "../../../utils/validar-campo";
+import type { data } from "react-router-dom";
 
 export const clienteSchema = Yup.object({
   nome: Yup.string().required('Campo obrigatório'),
@@ -10,8 +11,8 @@ export const clienteSchema = Yup.object({
     }),
   rg: Yup.string().required('Campo obrigatório'),
   naturalidade: Yup.string().default(''),
-  dataNascimento: Yup.string().default('')
-    .test('dataNascimento', 'Data inválida', value => {
+  data_nascimento: Yup.string().default('')
+    .test('data_nascimento', 'Data inválida', value => {
       const result = value == '' ? true : validarCampo(value, "data")
       return result === true
     }),
