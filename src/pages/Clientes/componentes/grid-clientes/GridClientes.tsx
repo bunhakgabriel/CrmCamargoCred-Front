@@ -89,15 +89,19 @@ export default function GridClientes() {
 
     const datasource = {
         getRows: async (params: any) => {
-            const { startRow, endRow } = params;
+            const { startRow, endRow, filterModel, sortModel } = params;
 
-            const skip = startRow;
-            const take = endRow - startRow;
+            const parametrosBusca = {
+                skip: startRow,
+                take: endRow - startRow,
+                filtros: filterModel,
+                ordenacao: sortModel
+            }
 
             try {
                 const response = await queryClient.fetchQuery({ 
                     queryKey: ['clientes'], 
-                    queryFn: () => ClienteService.buscarClientes(skip, take), 
+                    queryFn: () => ClienteService.buscarClientes(parametrosBusca), 
                 });
 
                 const rows = response.data;

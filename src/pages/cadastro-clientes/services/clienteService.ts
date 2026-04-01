@@ -2,7 +2,16 @@
 import api from "../../../api/api.ts";
 import type { IApiResponse } from "../../../interfaces/IApiResponse.ts";
 import type { ICliente } from "../../../interfaces/ICliente";
+import type { FiltrosGrid } from "../../../types/FiltrosGrid.ts";
+import type { OrdenacaoGrid } from "../../../types/OrdenacaoGrid.ts";
 
+
+type BuscarClientesParams = {
+    skip: number
+    take: number
+    filtros: FiltrosGrid
+    ordenacao: OrdenacaoGrid
+}
 
 const ClienteService = {
     salvarCliente: async (cliente: ICliente): Promise<IApiResponse<ICliente>> => {
@@ -10,8 +19,18 @@ const ClienteService = {
         return response.data;
     },
 
-    buscarClientes: async (skip: number, take: number): Promise<IApiResponse<ICliente[], { total: number }>> => {
-        const response = await api.get<IApiResponse<ICliente[], { total: number }>>(`/cliente/buscar?skip=${skip}&take=${take}`);
+    buscarClientes: async ({
+        skip,
+        take,
+        filtros,
+        ordenacao
+    }: BuscarClientesParams): Promise<IApiResponse<ICliente[], { total: number }>> => {
+
+        const response =
+            await api.post<IApiResponse<ICliente[], { total: number }>>('/cliente/buscar', {
+                params: { skip, take, filtros, ordenacao }
+            });
+
         return response.data;
     },
 
