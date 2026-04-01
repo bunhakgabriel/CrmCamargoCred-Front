@@ -10,8 +10,8 @@ const ClienteService = {
         return response.data;
     },
 
-    buscarClientes: async (): Promise<IApiResponse<ICliente[]>> => {
-        const response = await api.get<IApiResponse<ICliente[]>>('/cliente/buscar');
+    buscarClientes: async (skip: number, take: number): Promise<IApiResponse<ICliente[], { total: number }>> => {
+        const response = await api.get<IApiResponse<ICliente[], { total: number }>>(`/cliente/buscar?skip=${skip}&take=${take}`);
         return response.data;
     },
 

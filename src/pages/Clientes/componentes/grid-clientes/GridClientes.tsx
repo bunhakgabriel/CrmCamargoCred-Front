@@ -28,11 +28,6 @@ export default function GridClientes() {
 
     const queryClient = useQueryClient();
 
-    const { data, isLoading, error } = useQuery({
-        queryKey: ['clientes'],
-        queryFn: async () => ClienteService.buscarClientes(),
-    });
-
     const mutationDelete = useMutation({
         mutationFn: ClienteService.deletarCliente,
         onSuccess: () => {
@@ -64,17 +59,17 @@ export default function GridClientes() {
     }
 
     const handleEditCliente = (id: number) => {
-            mutationGetCliente.mutate(id);
+        mutationGetCliente.mutate(id);
     }
 
     const columnDefs = useMemo<ColDef<ICliente>[]>(
         () => [
             { field: "nome", headerName: "Nome", flex: 2, minWidth: 150, filter: true },
-            { field: "cpf", headerName: "CPF", flex: 1.5, minWidth: 140 },
-            { field: "rg", headerName: "RG", flex: 1.2, minWidth: 120 },
+            { field: "cpf", headerName: "CPF", flex: 1.5, minWidth: 140, filter: true },
+            { field: "rg", headerName: "RG", flex: 1.2, minWidth: 120, filter: true },
             { field: "naturalidade", headerName: "Naturalidade", flex: 1.5, minWidth: 130, filter: true },
-            { field: "telefone", headerName: "Telefone", flex: 1.3, minWidth: 140 },
-            { field: "data_nascimento", headerName: "Nascimento", flex: 1.2, minWidth: 120, valueFormatter: dateFormatter },
+            { field: "telefone", headerName: "Telefone", flex: 1.3, minWidth: 140, filter: true },
+            { field: "data_nascimento", headerName: "Nascimento", flex: 1.2, minWidth: 120, filter: true, valueFormatter: dateFormatter },
             {
                 headerName: "Ações",
                 cellRenderer: AcoesGridClientes,
@@ -92,6 +87,28 @@ export default function GridClientes() {
         []
     );
 
+    const datasource = {
+        getRows: async (params: any) => {
+            const { startRow, endRow } = params;
+
+            const skip = startRow;
+            const take = endRow - startRow;
+
+            try {
+                const response = await queryClient.fetchQuery({ 
+                    queryKey: ['clientes'], 
+                    queryFn: () => ClienteService.buscarClientes(skip, take), 
+                });
+
+                const rows = response.data;
+                const total = response.meta?.total;
+                params.successCallback(rows, total);
+            } catch (error) {
+                params.failCallback();
+            }
+        }
+    };
+
     const defaultColDef = useMemo<ColDef>(
         () => ({
             sortable: true,
@@ -100,20 +117,21 @@ export default function GridClientes() {
         []
     );
 
-    if (isLoading) return <p>Carregando...</p>
-    if (error) return <p>Erro ao buscar dados</p>
-
     return (
         <div className="w-full h-100">
             <AgGridReact<ICliente>
                 theme={themeAlpine}
-                rowData={data?.data || []}
                 columnDefs={columnDefs}
                 defaultColDef={defaultColDef}
-                animateRows
+                rowModelType="infinite"
                 pagination
                 paginationPageSize={10}
+                cacheBlockSize={10}
+                onGridReady={(params) => {
+                    params.api.setGridOption('datasource', datasource);
+                }}
             />
+
             <ConfirmDelete
                 open={!!clienteDelete}
                 onCancel={() => setClienteDelete(null)}
