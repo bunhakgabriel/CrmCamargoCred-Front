@@ -1,13 +1,14 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import {
     AllCommunityModule,
     ModuleRegistry,
     type ColDef,
     themeAlpine,
+    type GridApi,
 } from "ag-grid-community";
 import { toast } from "sonner";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { ICliente } from "../../../../interfaces/ICliente";
 import ClienteService from "../../../cadastro-clientes/services/clienteService";
 import ConfirmDelete from "../../../../componentes/confirm-delete/ConfirmDelete";
@@ -26,13 +27,15 @@ export default function GridClientes() {
     const [clienteDelete, setClienteDelete] = useState<ICliente | null>(null);
     const [clienteEdit, setClienteEdit] = useState<ICliente | null>(null);
 
+    const gridRef = useRef<GridApi | null>(null);
+
     const queryClient = useQueryClient();
 
     const mutationDelete = useMutation({
         mutationFn: ClienteService.deletarCliente,
         onSuccess: () => {
             toast.success("Cliente excluído com sucesso!");
-            queryClient.invalidateQueries({ queryKey: ['clientes'] });
+            gridRef.current?.refreshInfiniteCache();
             setClienteDelete(null);
         },
         onError: () => {
@@ -99,9 +102,15 @@ export default function GridClientes() {
             }
 
             try {
-                const response = await queryClient.fetchQuery({ 
-                    queryKey: ['clientes'], 
-                    queryFn: () => ClienteService.buscarClientes(parametrosBusca), 
+                const response = await queryClient.fetchQuery({
+                    queryKey: [
+                        'clientes',
+                        startRow,
+                        endRow,
+                        JSON.stringify(filterModel),
+                        JSON.stringify(sortModel)
+                    ],
+                    queryFn: () => ClienteService.buscarClientes(parametrosBusca),
                 });
 
                 const rows = response.data;
@@ -132,6 +141,7 @@ export default function GridClientes() {
                 paginationPageSize={10}
                 cacheBlockSize={10}
                 onGridReady={(params) => {
+                    gridRef.current = params.api;
                     params.api.setGridOption('datasource', datasource);
                 }}
             />
@@ -144,6 +154,7 @@ export default function GridClientes() {
             <EditarCliente
                 cliente={clienteEdit}
                 onClose={() => setClienteEdit(null)}
+                resetGrid={() => gridRef.current?.refreshInfiniteCache()}
             />
         </div>
     );

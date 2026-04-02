@@ -16,11 +16,10 @@ import clsx from "clsx";
 type cadastroClienteProps = {
     cliente: ICliente | null
     onCloseModal?: () => void
+    resetGrid?: () => void
 }
 
-export default function CadastroCliente({ cliente, onCloseModal }: cadastroClienteProps) {
-    const queryClient = useQueryClient();
-
+export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: cadastroClienteProps) {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<IClienteForm>({
         resolver: yupResolver(clienteSchema),
         mode: 'onChange',
@@ -31,11 +30,11 @@ export default function CadastroCliente({ cliente, onCloseModal }: cadastroClien
         mutationFn: (cliente: ICliente) => ClienteService.salvarCliente(cliente),
         onSuccess: () => {
             toast.success('Cliente salvo com sucesso!')
-            queryClient.invalidateQueries({ queryKey: ['clientes'] });
             reset()
 
-            if (cliente && onCloseModal) {
+            if (cliente && onCloseModal && resetGrid) {
                 onCloseModal()
+                resetGrid()
             }
         },
         onError: (error) => {
