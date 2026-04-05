@@ -3,10 +3,14 @@ import type { User } from "firebase/auth";
 
 type AuthStore = {
   user: User | null;
-  setUser: (user: User | null) => void;
+  loading: boolean;
+  setUser: (value: User | null) => void;
+  setLoading: (value: boolean) => void
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
   user: null,
-  setUser: (user) => set({ user }),
+  loading: true,
+  setUser: (value) => set({ user: value }),
+  setLoading: (value) => set({ loading: value })
 }));

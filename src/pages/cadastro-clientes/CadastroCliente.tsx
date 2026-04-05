@@ -7,14 +7,14 @@ import { clienteSchema, type IClienteForm } from "./schema/ClienteSchema";
 import InputSimples from "../../componentes/input-simples/InputSimples";
 import type { ICliente } from "../../interfaces/ICliente";
 import { parseClienteRequest, parseClienteResponse } from "./parser/parseCliente";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import ClienteService from "./services/clienteService";
 import { toast } from "sonner";
 import { mask } from "../../utils/masks";
 import clsx from "clsx";
 
 type cadastroClienteProps = {
-    cliente: ICliente | null
+    cliente?: ICliente | null
     onCloseModal?: () => void
     resetGrid?: () => void
 }

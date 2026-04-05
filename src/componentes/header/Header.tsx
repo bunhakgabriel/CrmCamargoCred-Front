@@ -4,9 +4,26 @@ import { MdDashboard } from "react-icons/md";
 import { PATH } from "../../routes/rotas";
 import { FiUsers } from "react-icons/fi";
 import clsx from "clsx";
+import { LuLogOut } from "react-icons/lu";
+import { getAuth, signOut } from "firebase/auth";
+import { app } from "../../firebase/firebaseConfig";
+import { toast } from "sonner";
 
 function Header() {
   const location = useLocation();
+
+  function logout() {
+    const auth = getAuth(app);
+
+    signOut(auth)
+      .then(() => {
+        toast.success('Sessão finalizada com sucesso!')
+      })
+      .catch((error) => {
+        toast.error('Erro ao finalizar sessão!')
+        console.log('erro: ', error)
+      });
+  }
 
   const menu = [
     { nome: "Painel", path: PATH.PAINEL, icon: <MdDashboard /> },
@@ -48,6 +65,14 @@ function Header() {
             );
           })}
         </nav>
+
+        <div>
+          <LuLogOut
+            onClick={logout}
+            size={24}
+            className="text-gray-700 cursor-pointer transition-colors duration-300 ease-in-out hover:text-red-500 active:opacity-50"
+          />
+        </div>
       </div>
     </header>
   );
