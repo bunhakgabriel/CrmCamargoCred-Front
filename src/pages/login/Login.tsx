@@ -9,9 +9,10 @@ import api from "../../api/api";
 
 export function Login() {
     const user = useAuthStore((state) => state.user);
+    const checkingAuth = useAuthStore((state) => state.checkingAuth);
     const setCheckingAuth = useAuthStore((state) => state.setCheckingAuth);
 
-    if (user) {
+    if (user && !checkingAuth) {
         return <Navigate to="/" replace />;
     }
 
