@@ -5,9 +5,11 @@ import { app } from "../../firebase/firebaseConfig";
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../../store/authStore";
 import { toast } from "sonner";
+import api from "../../api/api";
 
 export function Login() {
     const user = useAuthStore((state) => state.user);
+    const setCheckingAuth = useAuthStore((state) => state.setCheckingAuth);
 
     if (user) {
         return <Navigate to="/" replace />;
@@ -18,11 +20,14 @@ export function Login() {
 
     const handleLogin = async () => {
         try {
+            setCheckingAuth(true);
             await signInWithPopup(auth, provider);
-            toast.success('Login realizado com sucesso!')
+            await api.get("/auth/me");
+            toast.success('Login realizado com sucesso!');
         } catch (error) {
-            toast.error('Falha ao realizar login!')
-            console.log(error);
+            console.log('ERRO: ', error);
+        } finally {
+            setCheckingAuth(false);
         }
     };
 

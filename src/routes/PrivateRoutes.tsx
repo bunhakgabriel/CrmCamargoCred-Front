@@ -5,10 +5,11 @@ import { useAuthStore } from "../store/authStore";
 export function PrivateRoute() {
   const user = useAuthStore((state) => state.user);
   const loading = useAuthStore((state) => state.loading);
+  const checkingAuth = useAuthStore((state) => state.checkingAuth);
 
-  if (loading) {
+  if (loading || checkingAuth) {
     return <div>Carregando...</div>; // pode melhorar depois
   }
 
-  return user ? <Outlet /> : <Navigate to="/login" />;
+  return user && !checkingAuth ? <Outlet /> : <Navigate to="/login" />;
 }
