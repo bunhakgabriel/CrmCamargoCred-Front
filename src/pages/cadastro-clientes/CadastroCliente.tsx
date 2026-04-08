@@ -2,7 +2,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { LuSave } from "react-icons/lu";
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { clienteSchema, type IClienteForm } from "./schema/ClienteSchema";
 import InputSimples from "../../componentes/input-simples/InputSimples";
 import type { ICliente } from "../../interfaces/ICliente";
@@ -12,6 +12,8 @@ import ClienteService from "./services/clienteService";
 import { toast } from "sonner";
 import { mask } from "../../utils/masks";
 import clsx from "clsx";
+import Select from 'react-select';
+import { sexoOptions, ufOptions, type OptionSelect } from "./data/data";
 
 type cadastroClienteProps = {
     cliente?: ICliente | null
@@ -20,7 +22,7 @@ type cadastroClienteProps = {
 }
 
 export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: cadastroClienteProps) {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<IClienteForm>({
+    const { register, handleSubmit, formState: { errors }, reset, control } = useForm<IClienteForm>({
         resolver: yupResolver(clienteSchema),
         mode: 'onChange',
         defaultValues: cliente ? parseClienteResponse(cliente) : {}
@@ -44,7 +46,9 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
 
     function onSubmit(data: IClienteForm) {
         const cliente: ICliente = parseClienteRequest(data)
-        mutation.mutate(cliente)
+
+        console.log('Cliente: ', data)
+        // mutation.mutate(cliente)
     }
 
     return (
@@ -75,14 +79,22 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
 
                     <div className="flex flex-col gap-3">
-                        <h3 className="text-gray-500 font-semibold text-sm">DADOS PESSOAIS</h3>
+                        <h3 className="text-gray-500 font-semibold text-sm">INFORMAÇÕES BÁSICAS DO CLIENTE</h3>
 
                         <div className="flex flex-col gap-3">
                             {/* <div className="grid grid-cols-12 gap-3"> */}
 
-                            <div>
+                            {/* Linha 1 */}
+                            <div className="flex gap-3">
                                 <InputSimples
-                                    col={12}
+                                    label="CPF"
+                                    name="cpf"
+                                    register={register}
+                                    error={errors.cpf}
+                                    maxLength={14}
+                                    mask={(value) => mask(value, 'cpf')}
+                                />
+                                <InputSimples
                                     label="Nome Cliente"
                                     name="nome"
                                     register={register}
@@ -92,49 +104,30 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
                                 />
                             </div>
 
+                            {/* Linha 2 */}
                             <div className="flex gap-3">
-                                <InputSimples
-                                    col={6}
-                                    label="CPF"
-                                    name="cpf"
-                                    register={register}
-                                    error={errors.cpf}
-                                    maxLength={14}
-                                    mask={(value) => mask(value, 'cpf')}
+                                <Controller
+                                    name="sexo"
+                                    rules={{ required: true }}
+                                    control={control}
+                                    render={({ field }) => (
+                                        <div className="flex flex-col gap-1 w-full">
+                                            <label className="text-xs text-gray-700">Sexo</label>
+                                            <Select<OptionSelect>
+                                                {...field}
+                                                options={sexoOptions}
+                                                isClearable
+                                                placeholder="Selecione"
+                                                onChange={(option) => field.onChange(option?.value)}
+                                                value={sexoOptions.find(opt => opt.value === field.value) || null}
+                                            />
+                                            {errors.uf_rg && (
+                                                <span className="text-red-500 text-xs">{errors.sexo?.message}</span>
+                                            )}
+                                        </div>
+                                    )}
                                 />
-
                                 <InputSimples
-                                    col={6}
-                                    label="RG"
-                                    name="rg"
-                                    register={register}
-                                    error={errors.rg}
-                                    maxLength={12}
-                                    mask={(value) => mask(value, 'rg')}
-                                />
-                            </div>
-
-                            <div className="flex gap-3">
-                                <InputSimples
-                                    col={4}
-                                    label="Naturalidade"
-                                    name="naturalidade"
-                                    register={register}
-                                    error={errors.naturalidade}
-                                />
-
-                                <InputSimples
-                                    col={4}
-                                    label="Fone"
-                                    name="telefone"
-                                    register={register}
-                                    error={errors.telefone}
-                                    maxLength={15}
-                                    mask={(value) => mask(value, 'telefone')}
-                                />
-
-                                <InputSimples
-                                    col={4}
                                     label="Data de Nascimento"
                                     name="data_nascimento"
                                     register={register}
@@ -142,7 +135,135 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
                                     maxLength={10}
                                     mask={(value) => mask(value, 'date')}
                                 />
+                                <InputSimples
+                                    label="Naturalidade"
+                                    name="naturalidade"
+                                    register={register}
+                                    error={errors.naturalidade}
+                                />
+                                <InputSimples
+                                    label="Nacionalidade"
+                                    name="nacionalidade"
+                                    register={register}
+                                    error={errors.nacionalidade}
+                                />
                             </div>
+
+                            {/* Linha 3 */}
+                            <div className="flex gap-3">
+                                <InputSimples
+                                    label="RG"
+                                    name="rg"
+                                    register={register}
+                                    error={errors.rg}
+                                    maxLength={12}
+                                    mask={(value) => mask(value, 'rg')}
+                                />
+                                <InputSimples
+                                    label="Data emissão"
+                                    name="data_emissao_rg"
+                                    register={register}
+                                    error={errors.data_emissao_rg}
+                                    maxLength={10}
+                                    mask={(value) => mask(value, 'date')}
+                                />
+                                <InputSimples
+                                    label="Orgão emissor"
+                                    name="orgao_emissor_rg"
+                                    register={register}
+                                    error={errors.orgao_emissor_rg}
+                                    maxLength={12}
+                                />
+
+                                <Controller
+                                    name="uf_rg"
+                                    rules={{ required: true }}
+                                    control={control}
+                                    render={({ field }) => (
+                                        <div className="flex flex-col gap-1 w-full">
+                                            <label className="text-xs text-gray-700">UF</label>
+                                            <Select<OptionSelect>
+                                                {...field}
+                                                options={ufOptions}
+                                                isClearable
+                                                placeholder="Selecione uma UF"
+                                                onChange={(option) => field.onChange(option?.value)}
+                                                value={ufOptions.find(opt => opt.value === field.value) || null}
+                                            />
+                                            {errors.uf_rg && (
+                                                <span className="text-red-500 text-xs">{errors.uf_rg?.message}</span>
+                                            )}
+                                        </div>
+                                    )}
+                                />
+                            </div>
+
+
+                            {/* Linha 4 */}
+                            <div className="flex gap-3">
+                                <InputSimples
+                                    label="Observações"
+                                    name="observacoes"
+                                    register={register}
+                                    type="textArea"
+                                    error={errors.observacoes}
+                                />
+                                <InputSimples 
+                                    label="E-mail"
+                                    name="email"
+                                    register={register}
+                                    error={errors.email}
+                                />
+                            </div>
+
+
+                            {/* Linha 4 */}
+                            <div className="flex gap-3">
+                                <InputSimples
+                                    label="Fone"
+                                    name="telefone"
+                                    register={register}
+                                    error={errors.telefone}
+                                    maxLength={15}
+                                    mask={(value) => mask(value, 'telefone')}
+                                />
+                            </div>
+
+                            <div className="flex gap-3">
+                                <InputSimples
+                                    label="Nome do Cônjuge"
+                                    name="conjugue.nome"
+                                    register={register}
+                                    error={errors.conjugue?.nome}
+                                    maxLength={100}
+                                />
+                                <InputSimples
+                                    label="Doc. Identidade (Tipo / Nº / Data Emissão)"
+                                    name="conjugue.documento"
+                                    register={register}
+                                    error={errors.conjugue?.documento}
+                                    maxLength={100}
+                                />
+                            </div>
+
+                            <div className="flex gap-3">
+                                <InputSimples
+                                    label="Naturalidade (cidade e estado)"
+                                    name="conjugue.naturalidade"
+                                    register={register}
+                                    error={errors.conjugue?.naturalidade}
+                                    maxLength={100}
+                                />
+                                <InputSimples
+                                    label="Data Nascimento"
+                                    name="conjugue.data_nascimento"
+                                    register={register}
+                                    error={errors.conjugue?.nome}
+                                    maxLength={10}
+                                    mask={(value) => mask(value, 'date')}
+                                />
+                            </div>
+
                         </div>
                     </div>
 
