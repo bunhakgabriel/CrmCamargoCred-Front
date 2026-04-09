@@ -38,7 +38,7 @@ export const sexoOptions: OptionSelect[] = [
   { value: "F", label: "Feminino" },
 ]
 
-export const grauInstrucaoOptons: OptionSelect[] = [
+export const grauInstrucaoOptions: OptionSelect[] = [
   { value: "Analfabeto", label: "Analfabeto" },
   { value: "Lê e Escreve", label: "Lê e Escreve" },
   { value: "Primeiro Grau Incompleto", label: "Primeiro Grau Incompleto" },

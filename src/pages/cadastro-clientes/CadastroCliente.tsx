@@ -13,7 +13,7 @@ import { toast } from "sonner";
 import { mask } from "../../utils/masks";
 import clsx from "clsx";
 import Select from 'react-select';
-import { sexoOptions, ufOptions, type OptionSelect } from "./data/data";
+import { enderecoCorrespondenciaOptions, estadoCivilOptions, grauInstrucaoOptions, sexoOptions, ufOptions, type OptionSelect } from "./data/data";
 import { buscarCep } from "../../services/buscarCep";
 
 type cadastroClienteProps = {
@@ -140,7 +140,7 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
                                                 onChange={(option) => field.onChange(option?.value)}
                                                 value={sexoOptions.find(opt => opt.value === field.value) || null}
                                             />
-                                            {errors.uf_rg && (
+                                            {errors.sexo && (
                                                 <span className="text-red-500 text-xs">{errors.sexo?.message}</span>
                                             )}
                                         </div>
@@ -339,7 +339,6 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
                     <div className="flex flex-col gap-3">
                         <h3 className="text-gray-500 font-semibold text-sm">INFORMAÇÕES ADICIONAIS</h3>
 
-
                         <div className="flex gap-3">
                             <InputSimples
                                 label="Nome do Pai"
@@ -357,70 +356,74 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
                             />
                         </div>
 
-
-                        <div>
+                        <div className="flex gap-3">
                             <Controller
-                                name="sexo"
-                                rules={{ required: true }}
+                                name="grau_instrucao"
                                 control={control}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-1 w-full">
-                                        <label className="text-xs text-gray-700">Sexo</label>
+                                        <label className="text-xs text-gray-700">Grau de Instrução</label>
                                         <Select<OptionSelect>
                                             {...field}
-                                            options={sexoOptions}
+                                            options={grauInstrucaoOptions}
                                             isClearable
                                             placeholder="Selecione"
                                             onChange={(option) => field.onChange(option?.value)}
-                                            value={sexoOptions.find(opt => opt.value === field.value) || null}
+                                            value={grauInstrucaoOptions.find(opt => opt.value === field.value) || null}
                                         />
-                                        {errors.uf_rg && (
-                                            <span className="text-red-500 text-xs">{errors.sexo?.message}</span>
+                                        {errors.grau_instrucao && (
+                                            <span className="text-red-500 text-xs">{errors.grau_instrucao?.message}</span>
                                         )}
                                     </div>
                                 )}
                             />
                             <Controller
-                                name="sexo"
-                                rules={{ required: true }}
+                                name="estado_civil"
                                 control={control}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-1 w-full">
-                                        <label className="text-xs text-gray-700">Sexo</label>
+                                        <label className="text-xs text-gray-700">Estado civil</label>
                                         <Select<OptionSelect>
                                             {...field}
-                                            options={sexoOptions}
+                                            options={estadoCivilOptions}
                                             isClearable
                                             placeholder="Selecione"
                                             onChange={(option) => field.onChange(option?.value)}
-                                            value={sexoOptions.find(opt => opt.value === field.value) || null}
+                                            value={estadoCivilOptions.find(opt => opt.value === field.value) || null}
                                         />
-                                        {errors.uf_rg && (
-                                            <span className="text-red-500 text-xs">{errors.sexo?.message}</span>
+                                        {errors.estado_civil && (
+                                            <span className="text-red-500 text-xs">{errors.estado_civil?.message}</span>
                                         )}
                                     </div>
                                 )}
                             />
                             <Controller
-                                name="sexo"
-                                rules={{ required: true }}
+                                name="endereco_correspondencia"
                                 control={control}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-1 w-full">
-                                        <label className="text-xs text-gray-700">Sexo</label>
+                                        <label className="text-xs text-gray-700">End. p/Correspondência</label>
                                         <Select<OptionSelect>
                                             {...field}
-                                            options={sexoOptions}
+                                            options={enderecoCorrespondenciaOptions}
                                             isClearable
                                             placeholder="Selecione"
                                             onChange={(option) => field.onChange(option?.value)}
-                                            value={sexoOptions.find(opt => opt.value === field.value) || null}
+                                            value={enderecoCorrespondenciaOptions.find(opt => opt.value === field.value) || null}
                                         />
-                                        {errors.uf_rg && (
-                                            <span className="text-red-500 text-xs">{errors.sexo?.message}</span>
+                                        {errors.endereco_correspondencia && (
+                                            <span className="text-red-500 text-xs">{errors.endereco_correspondencia?.message}</span>
                                         )}
                                     </div>
                                 )}
+                            />
+                            <InputSimples
+                                label="Nº Dependentes"
+                                name="num_dependentes"
+                                register={register}
+                                error={errors.num_dependentes}
+                                maxLength={3}
+                                mask={(value) => mask(value, 'apenasNumeros')}
                             />
                         </div>
 

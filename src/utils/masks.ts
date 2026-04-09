@@ -4,7 +4,8 @@ type tipoMask =
     'date' |
     'cpf' |
     'rg' |
-    'cep'
+    'cep' |
+    'apenasNumeros'
 
 function apenasLetras(valor: string): string {
     return valor.replace(/[^\p{L}\s]/gu, '')
@@ -93,6 +94,8 @@ export function mask(value: string, mask: tipoMask): string {
     switch (mask) {
         case 'apenasLetras':
             return apenasLetras(value)
+        case 'apenasNumeros':
+            return apenasNumeros(value)
         case 'telefone':
             return telefoneMask(value)
         case 'date':

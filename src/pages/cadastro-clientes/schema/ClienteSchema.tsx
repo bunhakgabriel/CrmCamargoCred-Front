@@ -69,6 +69,10 @@ export const clienteSchema = Yup.object({
 
   nome_pai: Yup.string().default(''),
   nome_mae: Yup.string().default(''),
+  grau_instrucao: Yup.string().default(''),
+  estado_civil: Yup.string().default(''),
+  endereco_correspondencia: Yup.string().default(''),
+  num_dependentes: Yup.string().default(''),
   conjugue: Yup.object({
     nome: Yup.string().default(''),
     data_nascimento: Yup.string().default('')
