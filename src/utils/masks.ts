@@ -3,7 +3,8 @@ type tipoMask =
     'telefone' |
     'date' |
     'cpf' |
-    'rg'
+    'rg' |
+    'cep'
 
 function apenasLetras(valor: string): string {
     return valor.replace(/[^\p{L}\s]/gu, '')
@@ -74,6 +75,20 @@ function rgMask(value: string): string {
         .substring(0, 9)
 }
 
+function cepMask(value: string): string {
+    if (value.length > 9) return value.substring(0, 9)
+
+    // Remove tudo que não for número
+    let digits = value.replace(/\D/g, '')
+
+    // Aplica a máscara
+    if (digits.length > 5) {
+        digits = digits.slice(0, 5) + '-' + digits.slice(5, 8)
+    }
+
+    return digits
+}
+
 export function mask(value: string, mask: tipoMask): string {
     switch (mask) {
         case 'apenasLetras':
@@ -86,6 +101,8 @@ export function mask(value: string, mask: tipoMask): string {
             return cpfMask(value)
         case 'rg':
             return rgMask(value)
+        case 'cep':
+            return cepMask(value)
         default:
             return ''
     }

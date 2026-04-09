@@ -31,24 +31,51 @@ export const clienteSchema = Yup.object({
   orgao_emissor_rg: Yup.string().required('Campo obrigatório'),
   uf_rg: Yup.string().required('Campo obrigatório'),
 
-  observacoes: Yup.string().default(''),
-  email: Yup.string().default(''),
 
-
-  telefone: Yup.string().default('')
-    .test('telefone', 'Telefone inválido', value => {
+  telefone_1: Yup.string().default('')
+    .test('telefone_1', 'Telefone inválido', value => {
+      const result = value == '' ? true : validarCampo(value, "telefone")
+      return result === true
+    }),
+  telefone_2: Yup.string().default('')
+    .test('telefone_2', 'Telefone inválido', value => {
+      const result = value == '' ? true : validarCampo(value, "telefone")
+      return result === true
+    }),
+  telefone_3: Yup.string().default('')
+    .test('telefone_3', 'Telefone inválido', value => {
       const result = value == '' ? true : validarCampo(value, "telefone")
       return result === true
     }),
 
 
+  observacoes: Yup.string().default(''),
+  email: Yup.string().default(''),
+
+
+  endereco: Yup.object({
+    cep: Yup.string().default('')
+      .test('cep', 'Cep inválido', value => {
+        return value.length == 9 || value.length == 0
+      }),
+    rua: Yup.string().default(''),
+    cidade_estado: Yup.string().default(''),
+    bairro: Yup.string().default(''),
+    numero: Yup.string().default(''),
+    complemento: Yup.string().default(''),
+  }),
+
+
+
+  nome_pai: Yup.string().default(''),
+  nome_mae: Yup.string().default(''),
   conjugue: Yup.object({
     nome: Yup.string().default(''),
     data_nascimento: Yup.string().default('')
-    .test('conjugue.data_nascimento', 'Data inválida', value => {
-      const result = value == '' ? true : validarCampo(value, "data")
-      return result === true
-    }),
+      .test('conjugue.data_nascimento', 'Data inválida', value => {
+        const result = value == '' ? true : validarCampo(value, "data")
+        return result === true
+      }),
     documento: Yup.string().default(''),
     naturalidade: Yup.string().default('')
   }).nullable(),

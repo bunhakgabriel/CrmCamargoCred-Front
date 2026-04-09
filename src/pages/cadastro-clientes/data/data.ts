@@ -33,12 +33,30 @@ export const ufOptions: OptionSelect[] = [
   { value: "TO", label: "Tocantins" },
 ];
 
-export interface sexoOption {
-  value: string;
-  label: string;
-}
-
 export const sexoOptions: OptionSelect[] = [
   { value: "M", label: "Masculino" },
   { value: "F", label: "Feminino" },
+]
+
+export const grauInstrucaoOptons: OptionSelect[] = [
+  { value: "Analfabeto", label: "Analfabeto" },
+  { value: "Lê e Escreve", label: "Lê e Escreve" },
+  { value: "Primeiro Grau Incompleto", label: "Primeiro Grau Incompleto" },
+  { value: "Primeiro Grau Completo", label: "Primeiro Grau Completo" },
+  { value: "Segundo Grau Incompleto", label: "Segundo Grau Incompleto" },
+  { value: "Segundo Grau Completo", label: "Segundo Grau Completo" },
+  { value: "Superior Incompleto", label: "Superior Incompleto" },
+  { value: "Superior Completo", label: "Superior Completo" }
+]
+
+export const estadoCivilOptions: OptionSelect[] = [
+  { value: "Solteiro(a)", label: "Solteiro(a)" },
+  { value: "Casado(a)", label: "Casado(a)" },
+  { value: "Divorciado(a)", label: "Divorciado(a)" },
+  { value: "Viúvo(a)", label: "Viúvo(a)" },
+]
+
+export const enderecoCorrespondenciaOptions: OptionSelect[] = [
+  { value: "Residencial", label: "Residencial" },
+  { value: "Comercial", label: "Comercial" },
 ]
