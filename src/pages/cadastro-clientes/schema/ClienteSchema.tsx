@@ -10,8 +10,6 @@ export const clienteSchema = Yup.object({
       return result === true
     }),
   nome: Yup.string().required('Campo obrigatório'),
-
-
   sexo: Yup.string().required('Campo obrigatório'),
   data_nascimento: Yup.string().default('')
     .test('data_nascimento', 'Data inválida', value => {
@@ -20,8 +18,6 @@ export const clienteSchema = Yup.object({
     }),
   naturalidade: Yup.string().default(''),
   nacionalidade: Yup.string().default(''),
-
-
   rg: Yup.string().required('Campo obrigatório'),
   data_emissao_rg: Yup.string().required('Campo obrigatório')
     .test('data_emissao_rg', 'Data inválida', value => {
@@ -30,8 +26,6 @@ export const clienteSchema = Yup.object({
     }),
   orgao_emissor_rg: Yup.string().required('Campo obrigatório'),
   uf_rg: Yup.string().required('Campo obrigatório'),
-
-
   telefone_1: Yup.string().default('')
     .test('telefone_1', 'Telefone inválido', value => {
       const result = value == '' ? true : validarCampo(value, "telefone")
@@ -47,11 +41,21 @@ export const clienteSchema = Yup.object({
       const result = value == '' ? true : validarCampo(value, "telefone")
       return result === true
     }),
-
-
   observacoes: Yup.string().default(''),
   email: Yup.string().default(''),
 
+  info_bancarias: Yup.object({
+    banco: Yup.string().default(''),
+    agencia: Yup.string().default(''),
+    tipo_conta: Yup.string().default(''),
+    conta: Yup.string().default('')
+  }),
+
+  info_beneficio: Yup.object({
+    beneficio: Yup.array().of(Yup.string()).default([]),
+    convenio: Yup.array().of(Yup.string()).default([]),
+    margem: Yup.string().default(''),
+  }),
 
   endereco: Yup.object({
     cep: Yup.string().default('')

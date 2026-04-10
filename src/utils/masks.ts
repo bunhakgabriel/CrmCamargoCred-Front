@@ -5,7 +5,8 @@ type tipoMask =
     'cpf' |
     'rg' |
     'cep' |
-    'apenasNumeros'
+    'apenasNumeros' |
+    'currencyBRL'
 
 function apenasLetras(valor: string): string {
     return valor.replace(/[^\p{L}\s]/gu, '')
@@ -79,15 +80,26 @@ function rgMask(value: string): string {
 function cepMask(value: string): string {
     if (value.length > 9) return value.substring(0, 9)
 
-    // Remove tudo que não for número
     let digits = value.replace(/\D/g, '')
 
-    // Aplica a máscara
     if (digits.length > 5) {
         digits = digits.slice(0, 5) + '-' + digits.slice(5, 8)
     }
 
     return digits
+}
+
+function currencyBRLMask(value: string): string {
+    let digits = value.replace(/\D/g, '');
+
+    if (!digits) return '';
+
+    const number = Number(digits) / 100;
+
+    return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+    }).format(number);
 }
 
 export function mask(value: string, mask: tipoMask): string {
@@ -106,6 +118,8 @@ export function mask(value: string, mask: tipoMask): string {
             return rgMask(value)
         case 'cep':
             return cepMask(value)
+        case 'currencyBRL':
+            return currencyBRLMask(value)
         default:
             return ''
     }
