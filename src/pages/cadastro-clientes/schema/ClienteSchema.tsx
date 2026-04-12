@@ -88,6 +88,8 @@ export const clienteSchema = Yup.object({
     naturalidade: Yup.string().default('')
   }).nullable(),
 
+  documentos: Yup.mixed<File[]>().nullable()
+
 });
 
 export type IClienteForm = Yup.InferType<typeof clienteSchema>;
