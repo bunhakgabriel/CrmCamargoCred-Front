@@ -1,17 +1,15 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Controller, useFormContext, useWatch, type Control, type FieldValues, type Path } from "react-hook-form"
-import { IoAdd } from "react-icons/io5"
+import { IoAdd, IoDocumentText, IoDownload, IoEye, IoTrash } from "react-icons/io5"
 import type { IClienteForm } from "../../pages/cadastro-clientes/schema/ClienteSchema";
+import ConfirmDelete from "../confirm-delete/ConfirmDelete";
+import type { ArquivoUpload } from "../../types/ArquivoUpload";
 
 export default function UploadFiles() {
+  const [fileDelete, setFileDelete] = useState<ArquivoUpload | null>(null)
+  const { control, getValues } = useFormContext<IClienteForm>();
 
-  const { register, formState: { errors }, control } = useFormContext<IClienteForm>();
 
-    const obj = useWatch({ control })
-
-    useEffect(() => {
-        console.log(obj)
-    }, [obj])
 
   return (
     <Controller
@@ -20,22 +18,50 @@ export default function UploadFiles() {
       render={({ field }) => {
 
         const handleAddFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-          debugger
           const files = e.target.files
           if (!files || files.length === 0) return
 
-          const filesArray = Array.from(files)
+          const existingFiles = getValues('documentos') || []
 
-          field.onChange(filesArray)
+          const newFiles =
+            Array.from(files)
+              .map(item => {
+                return { file: item, url: null }
+              })
+              .filter(newFile => {
+                return !existingFiles.some(existingFile => {
+                  return newFile?.file?.name == existingFile?.file?.name &&
+                    newFile?.file?.size == existingFile?.file?.size
+                })
+              })
+
+          field.onChange([...existingFiles, ...newFiles])
+          e.target.value = ''
+        }
+
+        const handleDeleteFile = (file: ArquivoUpload | null) => {
+          if (!file) return
+
+          const existingFiles = getValues('documentos') || []
+
+          const updatedFiles = existingFiles.filter(existingFile => {
+            return !(
+              existingFile?.file?.name === file?.file?.name &&
+              existingFile?.file?.size === file?.file?.size
+            )
+          })
+
+          field.onChange(updatedFiles)
+          setFileDelete(null)
         }
 
         return (
           <div>
             <label
               htmlFor="upload"
-              className='w-21 h-21 border-2 border-dashed rounded-lg flex items-center justify-center text-blue-600 cursor-pointer hover:bg-blue-50 transition'
+              className='w-14 h-14 border-2 border-dashed rounded-lg flex items-center justify-center text-blue-600 cursor-pointer hover:bg-blue-50 transition'
             >
-              <IoAdd size={40} />
+              <IoAdd size={30} />
             </label>
 
             <input
@@ -47,14 +73,68 @@ export default function UploadFiles() {
               onChange={handleAddFile}
             />
 
-            {/* 👇 apenas para visualização */}
-            <div className="mt-2 flex flex-col gap-1">
-              {field.value?.map((file: File, index: number) => (
-                <span key={index} className="text-sm text-gray-600">
-                  {file.name}
-                </span>
-              ))}
+            <div className="flex flex-col gap-2 py-2">
+              {field.value?.map((file: ArquivoUpload) => {
+
+                const fileName = file.file?.name || file.url?.split('/').pop()
+                const fileUrl = file.url || (file.file ? URL.createObjectURL(file.file) : null)
+
+                return (
+                  <div
+                    key={file.file
+                      ? `${file.file.name}-${file.file.size}`
+                      : file.url
+                    }
+                    className="flex items-center justify-between rounded-lg px-3 py-2 bg-gray-50 hover:bg-gray-100 transition"
+                  >
+                    <div className="flex items-center gap-2 overflow-hidden">
+                      <IoDocumentText className="text-gray-500 shrink-0" size={18} />
+
+                      <span className="text-sm text-gray-700 truncate max-w-50">
+                        {fileName}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (!fileUrl) return
+                          window.open(fileUrl, "_blank")
+                        }}
+                        className="text-blue-500 hover:text-blue-600 transition cursor-pointer"
+                      >
+                        <IoEye size={18} />
+                      </button>
+
+                      <a
+                        href={fileUrl || undefined}
+                        download={fileName}
+                        className="text-gray-600 hover:text-gray-800 transition"
+                      >
+                        <IoDownload size={18} />
+                      </a>
+
+                      <button
+                        onClick={() => setFileDelete(file)}
+                        type="button"
+                        className="text-red-500 hover:text-red-600 transition cursor-pointer"
+                      >
+                        <IoTrash size={18} />
+                      </button>
+
+                    </div>
+                  </div>
+                )
+              })}
             </div>
+
+            <ConfirmDelete
+              open={!!fileDelete}
+              onCancel={() => setFileDelete(null)}
+              onConfirm={() => handleDeleteFile(fileDelete)}
+            />
           </div>
         )
       }}

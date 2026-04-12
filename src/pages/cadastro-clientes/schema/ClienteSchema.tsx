@@ -1,5 +1,6 @@
 import * as Yup from "yup";
 import validarCampo from "../../../utils/validar-campo";
+import type { ArquivoUpload } from "../../../types/ArquivoUpload";
 
 export const clienteSchema = Yup.object({
   id_cliente: Yup.number().default(0),
@@ -88,7 +89,7 @@ export const clienteSchema = Yup.object({
     naturalidade: Yup.string().default('')
   }).nullable(),
 
-  documentos: Yup.mixed<File[]>().nullable()
+  documentos: Yup.mixed<ArquivoUpload[]>().nullable()
 
 });
 

@@ -19,7 +19,7 @@ export default function ConfirmDelete({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      
+
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-xs"
@@ -28,7 +28,7 @@ export default function ConfirmDelete({
 
       {/* Modal */}
       <div className="relative z-10 w-full max-w-md rounded-2xl bg-white p-6 shadow-xl animate-in fade-in zoom-in-95">
-        
+
         {/* Header */}
         <h2 className="text-xl font-semibold text-gray-800">
           {title}
@@ -49,6 +49,7 @@ export default function ConfirmDelete({
           </button>
 
           <button
+            type="button"
             onClick={onConfirm}
             disabled={loading}
             className="cursor-pointer rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 transition disabled:opacity-50"
