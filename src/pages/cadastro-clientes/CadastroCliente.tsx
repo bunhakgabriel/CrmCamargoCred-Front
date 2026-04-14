@@ -48,10 +48,10 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
     })
 
     function onSubmit(data: IClienteForm) {
-        // const cliente: ICliente = parseClienteRequest(data)
+        const cliente: ICliente = parseClienteRequest(data)
 
         console.log('Cliente: ', data)
-        // mutation.mutate(cliente)
+        mutation.mutate(cliente)
     }
 
     return (

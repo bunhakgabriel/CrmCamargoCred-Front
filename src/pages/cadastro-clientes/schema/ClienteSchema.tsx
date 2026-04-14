@@ -53,8 +53,8 @@ export const clienteSchema = Yup.object({
   }),
 
   info_beneficio: Yup.object({
-    beneficio: Yup.array().of(Yup.string()).default([]),
-    convenio: Yup.array().of(Yup.string()).default([]),
+    beneficio: Yup.array().of(Yup.string().required()).default([]),
+    convenio: Yup.array().of(Yup.string().required()).default([]),
     margem: Yup.string().default(''),
   }),
 
@@ -87,7 +87,7 @@ export const clienteSchema = Yup.object({
       }),
     documento: Yup.string().default(''),
     naturalidade: Yup.string().default('')
-  }).nullable(),
+  }),
 
   documentos: Yup.mixed<ArquivoUpload[]>().nullable()
 

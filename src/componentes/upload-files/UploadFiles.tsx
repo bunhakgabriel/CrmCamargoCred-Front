@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import { Controller, useFormContext, useWatch, type Control, type FieldValues, type Path } from "react-hook-form"
+import { useState } from "react"
+import { Controller, useFormContext } from "react-hook-form"
 import { IoAdd, IoDocumentText, IoDownload, IoEye, IoTrash } from "react-icons/io5"
 import type { IClienteForm } from "../../pages/cadastro-clientes/schema/ClienteSchema";
 import ConfirmDelete from "../confirm-delete/ConfirmDelete";

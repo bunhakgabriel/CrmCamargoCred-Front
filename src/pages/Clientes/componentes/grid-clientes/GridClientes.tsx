@@ -71,7 +71,7 @@ export default function GridClientes() {
             { field: "cpf", headerName: "CPF", flex: 1.5, minWidth: 140, filter: true },
             { field: "rg", headerName: "RG", flex: 1.2, minWidth: 120, filter: true },
             { field: "naturalidade", headerName: "Naturalidade", flex: 1.5, minWidth: 130, filter: true },
-            { field: "telefone", headerName: "Telefone", flex: 1.3, minWidth: 140, filter: true },
+            { field: "telefone_1", headerName: "Telefone", flex: 1.3, minWidth: 140, filter: true },
             { field: "data_nascimento", headerName: "Nascimento", flex: 1.2, minWidth: 120, filter: true, valueFormatter: dateFormatter },
             {
                 headerName: "Ações",
