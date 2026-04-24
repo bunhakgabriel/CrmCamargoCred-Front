@@ -2,7 +2,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { LuSave } from "react-icons/lu";
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useForm, type Resolver, FormProvider } from "react-hook-form";
+import { useForm, type Resolver, FormProvider, useWatch } from "react-hook-form";
 import { clienteSchema, type IClienteForm } from "./schema/ClienteSchema";
 import type { ICliente } from "../../interfaces/ICliente";
 import { parseClienteRequest, parseClienteResponse } from "./parser/parseCliente";
@@ -15,6 +15,7 @@ import InformacoesBancarias from "./etapas/etapa-2/InformacoesBancarias";
 import InformacoesContato from "./etapas/etapa-3/InformacoesContato";
 import InformacoesAdicionais from "./etapas/etapa-4/InformacoesAdicionais";
 import Documentos from "./etapas/etapa-5/Documentos";
+import type { ArquivoUpload } from "../../types/ArquivoUpload";
 
 type cadastroClienteProps = {
     cliente?: ICliente | null
@@ -26,20 +27,42 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
     const form = useForm<IClienteForm>({
         resolver: yupResolver(clienteSchema) as Resolver<IClienteForm>,
         mode: 'onChange',
-        defaultValues: cliente ? parseClienteResponse(cliente) : {}
+        defaultValues: cliente ? parseClienteResponse(cliente) : defaultValues()
     })
 
-    const { handleSubmit, reset } = form
+    function defaultValues() {
+        return {
+            info_bancarias: [
+                {
+                    banco: '',
+                    agencia: '',
+                    tipo_conta: '',
+                    conta: ''
+                }
+            ],
+            info_beneficio: [
+                {
+                    beneficio: '',
+                    convenio: '',
+                    margem: ''
+                }
+            ]
+        } as IClienteForm
+    }
+
+    const { handleSubmit, reset, control } = form
 
     const mutation = useMutation({
-        mutationFn: (cliente: ICliente) => ClienteService.salvarCliente(cliente),
-        onSuccess: () => {
-            toast.success('Cliente salvo com sucesso!')
-            reset()
+        mutationFn: ({ cliente }: { cliente: ICliente, documentos: ArquivoUpload[] }) => ClienteService.salvarCliente(cliente),
+        onSuccess: (data, variables) => {
+            const { documentos } = variables
 
-            if (cliente && onCloseModal && resetGrid) {
-                onCloseModal()
-                resetGrid()
+            if (documentos && documentos?.length > 0) {
+                const idCliente = data.data.id_cliente
+                uploadDocumentos(idCliente, documentos)
+            } else {
+                toast.success('Cliente salvo com sucesso!')
+                resetFormAndModal()
             }
         },
         onError: (error) => {
@@ -47,11 +70,44 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
         }
     })
 
+    const mutationUploadDocumentos = useMutation({
+        mutationFn: (data: { idCliente: number, formData: FormData }) => ClienteService.uploadDocumentos(data.idCliente, data.formData),
+        onSuccess: () => {
+            toast.success('Cliente salvo com sucesso!')
+            resetFormAndModal()
+        },
+        onError: (error) => {
+            toast.success('Cliente salvo com sucesso!')
+            toast.error('Erro ao salvar documentos: ' + error.message)
+            resetFormAndModal()
+        },
+    })
+
+
+    function uploadDocumentos(idCliente: number, documentos: ArquivoUpload[]) {
+        if (!documentos || documentos?.length == 0) return
+        const formData = new FormData()
+
+        documentos.filter(a => a.file).forEach(file => {
+            formData.append('documentos', file.file as File)
+        })
+
+        mutationUploadDocumentos.mutate({ idCliente, formData })
+    }
+
     function onSubmit(data: IClienteForm) {
         const cliente: ICliente = parseClienteRequest(data)
+        console.log(cliente)
+        // mutation.mutate({ cliente, documentos: data.documentos || [] })
+    }
 
-        console.log('Cliente: ', data)
-        mutation.mutate(cliente)
+    function resetFormAndModal() {
+        reset()
+
+        if (cliente && onCloseModal && resetGrid) {
+            onCloseModal()
+            resetGrid()
+        }
     }
 
     return (
@@ -81,7 +137,7 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10">
-                    
+
                         <InformacoesBasicas />
                         <InformacoesBancarias />
                         <InformacoesContato />

@@ -42,6 +42,11 @@ const ClienteService = {
     deletarCliente: async (id: number): Promise<IApiResponse<null>> => {
         const response = await api.delete<IApiResponse<null>>('/cliente/deletar/' + id);
         return response.data;
+    },
+
+    uploadDocumentos: async(id: number, documentos: FormData): Promise<IApiResponse<null>> => {
+        const response = await api.post<IApiResponse<null>>('/cliente/salvardocumentos/' + id, documentos)
+        return response.data
     }
 };
 

@@ -45,18 +45,22 @@ export const clienteSchema = Yup.object({
   observacoes: Yup.string().default(''),
   email: Yup.string().default(''),
 
-  info_bancarias: Yup.object({
-    banco: Yup.string().default(''),
-    agencia: Yup.string().default(''),
-    tipo_conta: Yup.string().default(''),
-    conta: Yup.string().default('')
-  }),
+  info_bancarias: Yup.array().of(
+    Yup.object({
+      banco: Yup.string().default(''),
+      agencia: Yup.string().default(''),
+      tipo_conta: Yup.string().default(''),
+      conta: Yup.string().default('')
+    })
+  ).default([]),
 
-  info_beneficio: Yup.object({
-    beneficio: Yup.array().of(Yup.string().required()).default([]),
-    convenio: Yup.array().of(Yup.string().required()).default([]),
-    margem: Yup.string().default(''),
-  }),
+  info_beneficio: Yup.array().of(
+    Yup.object({
+      beneficio: Yup.string().default(''),
+      convenio: Yup.string().default(''),
+      margem: Yup.string().default(''),
+    })
+  ).default([]), 
 
   endereco: Yup.object({
     cep: Yup.string().default('')

@@ -96,6 +96,7 @@ export const bancosOptions: OptionSelect[] = [
 export const tipoContaOptions: OptionSelect[] = [
   { value: "CC", label: "CC" },
   { value: "CP", label: "CP" },
+  { value: "CM", label: "CM" },
 ]
 
 export const beneficiosOptions: OptionSelect[] = [

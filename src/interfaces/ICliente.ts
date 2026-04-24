@@ -6,9 +6,9 @@ type InfoBancarias = {
 }
 
 type InfoBeneficio = {
-    beneficio: string[]
-    convenio: string[]
-    margem: string
+    beneficio: number
+    convenio: string
+    margem: number
 }
 
 type Endereco = {
@@ -44,8 +44,8 @@ export interface ICliente {
     telefone_3: string
     observacoes: string
     email: string
-    info_bancarias: InfoBancarias
-    info_beneficio: InfoBeneficio
+    info_bancarias: InfoBancarias[]
+    info_beneficio: InfoBeneficio[]
     endereco: Endereco
     nome_pai: string,
     nome_mae: string,
