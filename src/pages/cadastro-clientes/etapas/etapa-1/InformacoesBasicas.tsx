@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import InputSimples from "../../../../componentes/input-simples/InputSimples";
-import { sexoOptions, ufOptions, type OptionSelect } from "../../data/data";
+import { nacionalidadeOptions, sexoOptions, ufOptions, type OptionSelectNumber, type OptionSelectString } from "../../data/data";
 import Select from 'react-select';
 import { type IClienteForm } from "../../schema/ClienteSchema";
 import { mask } from "../../../../utils/masks";
@@ -40,7 +40,7 @@ export default function InformacoesBasicas() {
                     render={({ field }) => (
                         <div className="flex flex-col gap-1 w-full">
                             <label className="text-xs text-gray-700">Sexo</label>
-                            <Select<OptionSelect>
+                            <Select<OptionSelectString>
                                 {...field}
                                 options={sexoOptions}
                                 isClearable
@@ -68,12 +68,30 @@ export default function InformacoesBasicas() {
                     register={register}
                     error={errors.naturalidade}
                 />
-                <InputSimples
-                    label="Nacionalidade"
+
+                <Controller
                     name="nacionalidade"
-                    register={register}
-                    error={errors.nacionalidade}
+                    rules={{ required: false }}
+                    control={control}
+                    render={({ field }) => (
+                        <div className="flex flex-col gap-1 w-full">
+                            <label className="text-xs text-gray-700">Nacionalidade</label>
+                            <Select<OptionSelectNumber>
+                                {...field}
+                                options={nacionalidadeOptions}
+                                isClearable
+                                placeholder="Selecione"
+                                onChange={(option) => field.onChange(option?.value)}
+                                value={nacionalidadeOptions.find(opt => opt.value === field.value) || null}
+                            />
+                            {errors.nacionalidade && (
+                                <span className="text-red-500 text-xs">{errors.nacionalidade?.message}</span>
+                            )}
+                        </div>
+                    )}
                 />
+
+
             </div>
 
             <div className="flex gap-3">
@@ -108,7 +126,7 @@ export default function InformacoesBasicas() {
                     render={({ field }) => (
                         <div className="flex flex-col gap-1 w-full">
                             <label className="text-xs text-gray-700">UF</label>
-                            <Select<OptionSelect>
+                            <Select<OptionSelectString>
                                 {...field}
                                 options={ufOptions}
                                 isClearable

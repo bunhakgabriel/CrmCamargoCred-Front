@@ -1,7 +1,7 @@
 import api from "../api/api"
 import type { IApiResponse } from "../interfaces/IApiResponse";
 import type { IEndereco } from "../interfaces/IEndereco";
-import type { OptionSelect } from "../types/OptionSelect";
+import type { OptionSelectString } from "../types/OptionSelectString";
 
 const UtilityService = {
 
@@ -10,8 +10,8 @@ const UtilityService = {
         return response.data;
     },
 
-    buscarUfs: async (): Promise<IApiResponse<OptionSelect>> => {
-        const response = await api.get<IApiResponse<OptionSelect>>('/reference-data/ufs');
+    buscarUfs: async (): Promise<IApiResponse<OptionSelectString>> => {
+        const response = await api.get<IApiResponse<OptionSelectString>>('/reference-data/ufs');
         return response.data;
     }
 }

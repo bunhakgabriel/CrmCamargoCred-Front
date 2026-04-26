@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import InputSimples from "../../../../componentes/input-simples/InputSimples";
-import { enderecoCorrespondenciaOptions, estadoCivilOptions, grauInstrucaoOptions, type OptionSelect } from "../../data/data";
+import { enderecoCorrespondenciaOptions, estadoCivilOptions, grauInstrucaoOptions, type OptionSelectNumber, type OptionSelectString } from "../../data/data";
 import type { IClienteForm } from "../../schema/ClienteSchema";
 import Select from 'react-select';
 import { mask } from "../../../../utils/masks";
@@ -37,7 +37,7 @@ export default function InformacoesAdicionais() {
                     render={({ field }) => (
                         <div className="flex flex-col gap-1 w-full">
                             <label className="text-xs text-gray-700">Grau de Instrução</label>
-                            <Select<OptionSelect>
+                            <Select<OptionSelectNumber>
                                 {...field}
                                 options={grauInstrucaoOptions}
                                 isClearable
@@ -57,7 +57,7 @@ export default function InformacoesAdicionais() {
                     render={({ field }) => (
                         <div className="flex flex-col gap-1 w-full">
                             <label className="text-xs text-gray-700">Estado civil</label>
-                            <Select<OptionSelect>
+                            <Select<OptionSelectNumber>
                                 {...field}
                                 options={estadoCivilOptions}
                                 isClearable
@@ -77,7 +77,7 @@ export default function InformacoesAdicionais() {
                     render={({ field }) => (
                         <div className="flex flex-col gap-1 w-full">
                             <label className="text-xs text-gray-700">End. p/Correspondência</label>
-                            <Select<OptionSelect>
+                            <Select<OptionSelectString>
                                 {...field}
                                 options={enderecoCorrespondenciaOptions}
                                 isClearable

@@ -1,7 +1,7 @@
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import type { IClienteForm } from "../../schema/ClienteSchema";
 import Select from 'react-select';
-import { bancosOptions, beneficiosOptions, conveniosOptions, tipoContaOptions, type OptionSelect } from "../../data/data";
+import { bancosOptions, beneficiosOptions, conveniosOptions, tipoContaOptions, type OptionSelectNumber, type OptionSelectString } from "../../data/data";
 import InputSimples from "../../../../componentes/input-simples/InputSimples";
 import { mask } from "../../../../utils/masks";
 import { IoAdd, IoRemoveOutline } from "react-icons/io5";
@@ -38,7 +38,7 @@ export default function InformacoesBancarias() {
     function adicionarBeneficio() {
         appendBeneficios({
             beneficio: '',
-            convenio: '',
+            convenio: undefined,
             margem: ''
         })
     }
@@ -57,7 +57,7 @@ export default function InformacoesBancarias() {
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-1 w-full">
                                         <label className="text-xs text-gray-700">Banco</label>
-                                        <Select<OptionSelect>
+                                        <Select<OptionSelectString>
                                             {...field}
                                             options={bancosOptions}
                                             isClearable
@@ -98,7 +98,7 @@ export default function InformacoesBancarias() {
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-1 w-full">
                                         <label className="text-xs text-gray-700">Tipo de Conta</label>
-                                        <Select<OptionSelect>
+                                        <Select<OptionSelectString>
                                             {...field}
                                             options={tipoContaOptions}
                                             isClearable
@@ -142,7 +142,7 @@ export default function InformacoesBancarias() {
                                     return (
                                         <div className="flex flex-col gap-1 w-full">
                                             <label className="text-xs text-gray-700">Benefício</label>
-                                            <Select<OptionSelect>
+                                            <Select<OptionSelectString>
                                                 {...field}
                                                 options={beneficiosOptions}
                                                 isClearable
@@ -166,7 +166,7 @@ export default function InformacoesBancarias() {
                                     return (
                                         <div className="flex flex-col gap-1 w-full">
                                             <label className="text-xs text-gray-700">Convênio</label>
-                                            <Select<OptionSelect>
+                                            <Select<OptionSelectNumber>
                                                 {...field}
                                                 options={conveniosOptions}
                                                 isClearable

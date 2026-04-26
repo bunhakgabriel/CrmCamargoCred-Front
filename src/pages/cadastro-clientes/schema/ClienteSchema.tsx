@@ -18,7 +18,7 @@ export const clienteSchema = Yup.object({
       return result === true
     }),
   naturalidade: Yup.string().default(''),
-  nacionalidade: Yup.string().default(''),
+  nacionalidade: Yup.number(),
   rg: Yup.string().required('Campo obrigatório'),
   data_emissao_rg: Yup.string().required('Campo obrigatório')
     .test('data_emissao_rg', 'Data inválida', value => {
@@ -57,7 +57,7 @@ export const clienteSchema = Yup.object({
   info_beneficio: Yup.array().of(
     Yup.object({
       beneficio: Yup.string().default(''),
-      convenio: Yup.string().default(''),
+      convenio: Yup.number(),
       margem: Yup.string().default(''),
     })
   ).default([]), 
@@ -78,10 +78,10 @@ export const clienteSchema = Yup.object({
 
   nome_pai: Yup.string().default(''),
   nome_mae: Yup.string().default(''),
-  grau_instrucao: Yup.string().default(''),
-  estado_civil: Yup.string().default(''),
+  grau_instrucao: Yup.number(),
+  estado_civil: Yup.number(),
   endereco_correspondencia: Yup.string().default(''),
-  num_dependentes: Yup.string().default(''),
+  num_dependentes: Yup.number(),
   conjugue: Yup.object({
     nome: Yup.string().default(''),
     data_nascimento: Yup.string().default('')

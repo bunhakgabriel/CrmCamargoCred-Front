@@ -16,6 +16,7 @@ import InformacoesContato from "./etapas/etapa-3/InformacoesContato";
 import InformacoesAdicionais from "./etapas/etapa-4/InformacoesAdicionais";
 import Documentos from "./etapas/etapa-5/Documentos";
 import type { ArquivoUpload } from "../../types/ArquivoUpload";
+import { useEffect } from "react";
 
 type cadastroClienteProps = {
     cliente?: ICliente | null
@@ -29,6 +30,14 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
         mode: 'onChange',
         defaultValues: cliente ? parseClienteResponse(cliente) : defaultValues()
     })
+
+    const { control } = form
+
+    const obj = useWatch({ control })
+
+    useEffect(() => {
+        console.log(obj)
+    }, [obj])
 
     function defaultValues() {
         return {
@@ -50,7 +59,7 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
         } as IClienteForm
     }
 
-    const { handleSubmit, reset, control } = form
+    const { handleSubmit, reset } = form
 
     const mutation = useMutation({
         mutationFn: ({ cliente }: { cliente: ICliente, documentos: ArquivoUpload[] }) => ClienteService.salvarCliente(cliente),
@@ -97,8 +106,7 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
 
     function onSubmit(data: IClienteForm) {
         const cliente: ICliente = parseClienteRequest(data)
-        console.log(cliente)
-        // mutation.mutate({ cliente, documentos: data.documentos || [] })
+        mutation.mutate({ cliente, documentos: data.documentos || [] })
     }
 
     function resetFormAndModal() {

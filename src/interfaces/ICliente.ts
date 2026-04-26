@@ -1,13 +1,13 @@
-type InfoBancarias = {
+export type InfoBancarias = {
     banco: string
     agencia: string
     tipo_conta: string
     conta: string
 }
 
-type InfoBeneficio = {
-    beneficio: number
-    convenio: string
+export type InfoBeneficio = {
+    beneficio: string
+    convenio: number
     margem: number
 }
 
@@ -34,7 +34,7 @@ export interface ICliente {
     sexo: string
     data_nascimento: Date
     naturalidade: string
-    nacionalidade: string
+    nacionalidade: number | undefined
     rg: string
     data_emissao_rg: Date
     orgao_emissor_rg: string
@@ -49,9 +49,9 @@ export interface ICliente {
     endereco: Endereco
     nome_pai: string,
     nome_mae: string,
-    grau_instrucao: string,
-    estado_civil: string,
+    grau_instrucao: number | undefined,
+    estado_civil: number | undefined,
     endereco_correspondencia: string,
-    num_dependentes: string,
+    num_dependentes: number | undefined,
     conjugue: Conjugue
 }
