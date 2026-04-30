@@ -28,7 +28,7 @@ export default function InformacoesBancarias() {
         }
 
         appendBancarios({
-            banco: '',
+            banco: 0,
             agencia: '',
             tipo_conta: '',
             conta: ''
@@ -37,8 +37,8 @@ export default function InformacoesBancarias() {
 
     function adicionarBeneficio() {
         appendBeneficios({
-            beneficio: '',
-            convenio: undefined,
+            beneficio: 0,
+            convenio: 0,
             margem: ''
         })
     }
@@ -57,7 +57,7 @@ export default function InformacoesBancarias() {
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-1 w-full">
                                         <label className="text-xs text-gray-700">Banco</label>
-                                        <Select<OptionSelectString>
+                                        <Select<OptionSelectNumber>
                                             {...field}
                                             options={bancosOptions}
                                             isClearable
@@ -65,8 +65,8 @@ export default function InformacoesBancarias() {
                                             onChange={(option) => field.onChange(option?.value)}
                                             value={bancosOptions.find(opt => opt.value === field.value) || null}
                                         />
-                                        {errors.info_bancarias?.[index]?.banco && (
-                                            <span className="text-red-500 text-xs">{errors.info_bancarias?.[index]?.banco?.message}</span>
+                                        {errors.info_bancarias?.[index] && (
+                                            <span className="text-red-500 text-xs">{errors.info_bancarias?.[index]?.message}</span>
                                         )}
                                     </div>
                                 )}
@@ -142,7 +142,7 @@ export default function InformacoesBancarias() {
                                     return (
                                         <div className="flex flex-col gap-1 w-full">
                                             <label className="text-xs text-gray-700">Benefício</label>
-                                            <Select<OptionSelectString>
+                                            <Select<OptionSelectNumber>
                                                 {...field}
                                                 options={beneficiosOptions}
                                                 isClearable
@@ -150,8 +150,8 @@ export default function InformacoesBancarias() {
                                                 value={beneficiosOptions.find(opt => opt.value === field.value) || null}
                                                 onChange={(option) => field.onChange(option?.value)}
                                             />
-                                            {errors.info_beneficio?.[index]?.beneficio && (
-                                                <span className="text-red-500 text-xs">{errors.info_beneficio?.[index]?.beneficio?.message}</span>
+                                            {errors.info_beneficio?.[index] && (
+                                                <span className="text-red-500 text-xs">{errors.info_beneficio?.[index]?.message}</span>
                                             )}
                                         </div>
                                     )

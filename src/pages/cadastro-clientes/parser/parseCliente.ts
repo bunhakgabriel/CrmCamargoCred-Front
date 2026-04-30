@@ -1,4 +1,4 @@
-import type { ICliente, InfoBancarias, InfoBeneficio } from "../../../interfaces/ICliente"
+import type { Conjugue, Endereco, ICliente, InfoBancarias, InfoBeneficio } from "../../../interfaces/ICliente"
 import { formatMoneyToNumber } from "../../../utils/format-money"
 import { mask } from "../../../utils/masks"
 import { onlyNumbersToString } from "../../../utils/only-numbers"
@@ -6,46 +6,38 @@ import type { IClienteForm } from "../schema/ClienteSchema"
 
 
 export function parseClienteRequest(data: IClienteForm): ICliente {
-    return {
-        id_cliente: data.id_cliente,
+    debugger
+    const resp = {
+        id_cliente: data.id_cliente || 0,
         cpf: onlyNumbersToString(data.cpf),
         nome: data.nome,
-        sexo: data.sexo,
+        sexo: data.sexo || undefined,
         data_nascimento: parseDateRequest(data.data_nascimento),
-        naturalidade: data.naturalidade,
-        nacionalidade: data.nacionalidade,
+        naturalidade: data.naturalidade || undefined,
+        nacionalidade: data.nacionalidade || undefined,
         rg: onlyNumbersToString(data.rg),
         data_emissao_rg: parseDateRequest(data.data_emissao_rg),
-        orgao_emissor_rg: data.orgao_emissor_rg,
-        uf_rg: data.uf_rg,
-        telefone_1: onlyNumbersToString(data.telefone_1),
-        telefone_2: onlyNumbersToString(data.telefone_2),
-        telefone_3: onlyNumbersToString(data.telefone_3),
-        observacoes: data.observacoes,
-        email: data.email,
+        orgao_emissor_rg: data.orgao_emissor_rg || undefined,
+        uf_rg: data.uf_rg || undefined,
+        telefone_1: onlyNumbersToString(data.telefone_1) || undefined,
+        telefone_2: onlyNumbersToString(data.telefone_2) || undefined,
+        telefone_3: onlyNumbersToString(data.telefone_3) || undefined,
+        observacoes: data.observacoes || undefined,
+        email: data.email || undefined,
         info_bancarias: parseInfoBancariaRequest(data.info_bancarias),
         info_beneficio: parseInfoBeneficioRequest(data.info_beneficio),
-        endereco: {
-            cep: data.endereco.cep,
-            rua: data.endereco.rua,
-            cidade_estado: data.endereco.cidade_estado,
-            bairro: data.endereco.bairro,
-            numero: data.endereco.numero,
-            complemento: data.endereco.complemento,
-        },
+        endereco: parseEnderecoRequest(data.endereco),
         nome_pai: data.nome_pai,
         nome_mae: data.nome_mae,
         grau_instrucao: data.grau_instrucao,
         estado_civil: data.estado_civil,
         endereco_correspondencia: data.endereco_correspondencia,
         num_dependentes: data.num_dependentes,
-        conjugue: {
-            nome: data.conjugue.nome,
-            data_nascimento: parseDateRequest(data.conjugue.data_nascimento),
-            documento: data.conjugue.documento,
-            naturalidade: data.conjugue.naturalidade
-        }
+        conjugue: parseConjugueRequest(data.conjugue)
     }
+
+    debugger
+    return resp
 }
 
 export function parseClienteResponse(cliente: ICliente): IClienteForm {
@@ -72,24 +64,52 @@ function parseDateResponse(date: Date | string) {
     return `${day}/${month}/${year}`
 }
 
-function parseDateRequest(date: string): Date {
+function parseDateRequest(date: string | undefined): Date | undefined {
+    if (!date) return undefined
     const [day, month, year] = date.split('/').map(Number)
     return new Date(year, month - 1, day)
 }
 
-function parseInfoBancariaRequest(obj: InfoBancarias[]): InfoBancarias[] {
-    const resp = obj.filter(value => Object.values(value).some(v => v?.toString().trim() !== ''))
-    return resp;
+function parseInfoBancariaRequest(obj: InfoBancarias[]): InfoBancarias[] | undefined {
+    const resp = obj.filter(value => !!value.agencia && !!value.banco && !!value.conta && !!value.tipo_conta)
+    if(resp.length == 0) return undefined
+    return resp
 }
 
-function parseInfoBeneficioRequest(obj: { beneficio: string, convenio: string, margem: string }[]): InfoBeneficio[] {
+function parseEnderecoRequest(obj: Endereco): Endereco | undefined {
+    const value = [obj]
+    const resp = value.filter(value => 
+        !!value.bairro && !!value.cep && !!value.cidade_estado && !!value.complemento &&
+        !!value.numero && !!value.rua
+    )
+
+    if(resp.length == 0) return undefined
+    return resp[0]
+}
+
+function parseConjugueRequest(obj: { data_nascimento?: any, documento?: string, naturalidade?: string, nome?: string }): Conjugue | undefined {
+    const value = [obj]
+    const resp = value.filter(value => 
+        !!value.data_nascimento && !!value.documento && !!value.naturalidade && !!value.nome 
+    )
+
+    if(resp.length == 0) return undefined
+    resp[0].data_nascimento = parseDateRequest(resp[0].data_nascimento)
+}
+
+function parseInfoBeneficioRequest(obj: { beneficio?: number, convenio?: number, margem?: string }[]): InfoBeneficio[] | undefined {
     const resp = obj
-        .filter(value => Object.values(value).some(v => v?.toString().trim() !== ''))
+        .filter(
+            (value): value is { beneficio: number; convenio: number; margem: string } =>
+                !!value.margem && !!value.convenio && !!value.beneficio
+        )
         .map(value => ({
             beneficio: Number(value.beneficio),
             convenio: Number(value.convenio),
             margem: formatMoneyToNumber(value.margem)
         }));
 
+    if(resp.length == 0) return undefined
     return resp
 }
+

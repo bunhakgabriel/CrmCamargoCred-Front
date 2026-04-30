@@ -1,7 +1,7 @@
 import api from "../api/api"
 import type { IApiResponse } from "../interfaces/IApiResponse";
 import type { IEndereco } from "../interfaces/IEndereco";
-import type { OptionSelectString } from "../types/OptionSelectString";
+import type { OptionSelectString } from "../types/OptionSelect";
 
 const UtilityService = {
 

@@ -3,7 +3,7 @@ import validarCampo from "../../../utils/validar-campo";
 import type { ArquivoUpload } from "../../../types/ArquivoUpload";
 
 export const clienteSchema = Yup.object({
-  id_cliente: Yup.number().default(0),
+  id_cliente: Yup.number(),
 
   cpf: Yup.string().required('Campo obrigatório')
     .test('cpf', 'CPF inválido', value => {
@@ -11,86 +11,104 @@ export const clienteSchema = Yup.object({
       return result === true
     }),
   nome: Yup.string().required('Campo obrigatório'),
-  sexo: Yup.string().required('Campo obrigatório'),
-  data_nascimento: Yup.string().default('')
+  sexo: Yup.string(),
+  data_nascimento: Yup.string()
     .test('data_nascimento', 'Data inválida', value => {
+      if (!value) return true
       const result = value == '' ? true : validarCampo(value, "data")
       return result === true
     }),
-  naturalidade: Yup.string().default(''),
+  naturalidade: Yup.string(),
   nacionalidade: Yup.number(),
   rg: Yup.string().required('Campo obrigatório'),
-  data_emissao_rg: Yup.string().required('Campo obrigatório')
+  data_emissao_rg: Yup.string()
     .test('data_emissao_rg', 'Data inválida', value => {
+      if (!value) return true
       const result = value == '' ? true : validarCampo(value, "data")
       return result === true
     }),
-  orgao_emissor_rg: Yup.string().required('Campo obrigatório'),
-  uf_rg: Yup.string().required('Campo obrigatório'),
-  telefone_1: Yup.string().default('')
+  orgao_emissor_rg: Yup.string(),
+  uf_rg: Yup.string(),
+  telefone_1: Yup.string()
     .test('telefone_1', 'Telefone inválido', value => {
+      if (!value) return true
       const result = value == '' ? true : validarCampo(value, "telefone")
       return result === true
     }),
-  telefone_2: Yup.string().default('')
+  telefone_2: Yup.string()
     .test('telefone_2', 'Telefone inválido', value => {
+      if (!value) return true
       const result = value == '' ? true : validarCampo(value, "telefone")
       return result === true
     }),
-  telefone_3: Yup.string().default('')
+  telefone_3: Yup.string()
     .test('telefone_3', 'Telefone inválido', value => {
+      if (!value) return true
       const result = value == '' ? true : validarCampo(value, "telefone")
       return result === true
     }),
-  observacoes: Yup.string().default(''),
-  email: Yup.string().default(''),
+  observacoes: Yup.string(),
+  email: Yup.string(),
 
   info_bancarias: Yup.array().of(
     Yup.object({
-      banco: Yup.string().default(''),
-      agencia: Yup.string().default(''),
-      tipo_conta: Yup.string().default(''),
-      conta: Yup.string().default('')
+      banco: Yup.number(),
+      agencia: Yup.string(),
+      tipo_conta: Yup.string(),
+      conta: Yup.string()
     })
+      .test('info_bancarias', 'Preencha todos os campos de informações bancarias', value => {
+        const { banco, agencia, tipo_conta, conta } = value
+        if (!banco && !agencia && !tipo_conta && !conta) return true
+        return false
+      })
   ).default([]),
 
   info_beneficio: Yup.array().of(
     Yup.object({
-      beneficio: Yup.string().default(''),
+      beneficio: Yup.number(),
       convenio: Yup.number(),
-      margem: Yup.string().default(''),
+      margem: Yup.string(),
     })
-  ).default([]), 
+      .test('info_beneficio', 'Preencha todos os campos de informações do beneficio', value => {
+        const { beneficio, convenio, margem } = value
+        if (!beneficio && !convenio && !margem) return true
+        return false
+      })
+  ).default([]),
 
   endereco: Yup.object({
-    cep: Yup.string().default('')
+    cep: Yup.string()
       .test('cep', 'Cep inválido', value => {
+        if (!value) return true
         return value.length == 9 || value.length == 0
       }),
-    rua: Yup.string().default(''),
-    cidade_estado: Yup.string().default(''),
-    bairro: Yup.string().default(''),
-    numero: Yup.string().default(''),
-    complemento: Yup.string().default(''),
+    rua: Yup.string(),
+    cidade_estado: Yup.string(),
+    bairro: Yup.string(),
+    numero: Yup.string(),
+    complemento: Yup.string(),
   }),
 
-
-
-  nome_pai: Yup.string().default(''),
-  nome_mae: Yup.string().default(''),
+  nome_pai: Yup.string(),
+  nome_mae: Yup.string(),
   grau_instrucao: Yup.number(),
   estado_civil: Yup.number(),
-  endereco_correspondencia: Yup.string().default(''),
-  num_dependentes: Yup.number(),
+  endereco_correspondencia: Yup.string(),
+  num_dependentes: Yup.number()
+    .transform((value, originalValue) => {
+      return originalValue === "" ? undefined : value;
+    }),
   conjugue: Yup.object({
-    nome: Yup.string().default(''),
-    data_nascimento: Yup.string().default('')
+    nome: Yup.string(),
+    data_nascimento: Yup.string()
       .test('conjugue.data_nascimento', 'Data inválida', value => {
+        if (!value) return true
         const result = value == '' ? true : validarCampo(value, "data")
         return result === true
       }),
-    documento: Yup.string().default(''),
-    naturalidade: Yup.string().default('')
+    documento: Yup.string(),
+    naturalidade: Yup.string()
   }),
 
   documentos: Yup.mixed<ArquivoUpload[]>().nullable()

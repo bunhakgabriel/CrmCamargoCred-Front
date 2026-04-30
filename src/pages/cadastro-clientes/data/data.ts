@@ -66,36 +66,36 @@ export const enderecoCorrespondenciaOptions: OptionSelectString[] = [
   { value: "Comercial", label: "Comercial" },
 ]
 
-export const bancosOptions: OptionSelectString[] = [
-  { value: "321", label: "321 Sociedade de Crédito Direto S.A." },
-  { value: "318", label: "Banco Agibank S.A." },
-  { value: "752", label: "Banco Bari de Investimentos e Financiamentos S.A." },
-  { value: "318", label: "Banco BMG S.A." },
-  { value: "237", label: "Banco Bradesco S.A." },
-  { value: "208", label: "Banco BTG Pactual S.A." },
-  { value: "336", label: "Banco C6 Consignado S.A." },
-  { value: "756", label: "Banco Cooperativo Sicoob S.A." },
-  { value: "748", label: "Banco Cooperativo Sicredi S.A." },
-  { value: "707", label: "Banco Daycoval S.A." },
-  { value: "260", label: "Banco Digio S.A." },
-  { value: "001", label: "Banco do Brasil S.A." },
-  { value: "041", label: "Banco do Estado do Rio Grande do Sul S.A." },
-  { value: "630", label: "Banco Inbursa S.A." },
-  { value: "077", label: "Banco Inter S.A." },
-  { value: "389", label: "Banco Master S.A." },
-  { value: "389", label: "Banco Mercantil do Brasil S.A." },
-  { value: "623", label: "Banco Pan S.A." },
-  { value: "643", label: "Banco Paulista S.A." },
-  { value: "643", label: "Banco Pine S.A." },
-  { value: "634", label: "Banco Ribeirão Preto S.A." },
-  { value: "422", label: "Banco Safra S.A." },
-  { value: "033", label: "Banco Santander (Brasil) S.A." },
-  { value: "655", label: "Banco Votorantim S.A." },
-  { value: "VR", label: "Banco VR S.A." }, // Sem código FEBRABAN formal
-  { value: "021", label: "Banestes S.A. – Banco do Estado do Espírito Santo" },
-  { value: "318", label: "BMP Sociedade de Crédito Direto S.A." },
-  { value: "318", label: "CDC Sociedade de Crédito Direto S.A." },
-  { value: "318", label: "Capital Consig Sociedade de Crédito Direto S.A." },
+export const bancosOptions: OptionSelectNumber[] = [
+  // { value: "321", label: "321 Sociedade de Crédito Direto S.A." },
+  // { value: "318", label: "Banco Agibank S.A." },
+  // { value: "752", label: "Banco Bari de Investimentos e Financiamentos S.A." },
+  // { value: "318", label: "Banco BMG S.A." },
+  { value: 1, label: "237 Banco Bradesco S.A." },
+  // { value: "208", label: "Banco BTG Pactual S.A." },
+  // { value: "336", label: "Banco C6 Consignado S.A." },
+  // { value: "756", label: "Banco Cooperativo Sicoob S.A." },
+  // { value: "748", label: "Banco Cooperativo Sicredi S.A." },
+  // { value: "707", label: "Banco Daycoval S.A." },
+  // { value: "260", label: "Banco Digio S.A." },
+  // { value: "001", label: "Banco do Brasil S.A." },
+  // { value: "041", label: "Banco do Estado do Rio Grande do Sul S.A." },
+  // { value: "630", label: "Banco Inbursa S.A." },
+  // { value: "077", label: "Banco Inter S.A." },
+  // { value: "389", label: "Banco Master S.A." },
+  // { value: "389", label: "Banco Mercantil do Brasil S.A." },
+  // { value: "623", label: "Banco Pan S.A." },
+  // { value: "643", label: "Banco Paulista S.A." },
+  // { value: "643", label: "Banco Pine S.A." },
+  // { value: "634", label: "Banco Ribeirão Preto S.A." },
+  // { value: "422", label: "Banco Safra S.A." },
+  // { value: "033", label: "Banco Santander (Brasil) S.A." },
+  // { value: "655", label: "Banco Votorantim S.A." },
+  // { value: "VR", label: "Banco VR S.A." }, // Sem código FEBRABAN formal
+  // { value: "021", label: "Banestes S.A. – Banco do Estado do Espírito Santo" },
+  // { value: "318", label: "BMP Sociedade de Crédito Direto S.A." },
+  // { value: "318", label: "CDC Sociedade de Crédito Direto S.A." },
+  // { value: "318", label: "Capital Consig Sociedade de Crédito Direto S.A." },
 ]
 
 export const tipoContaOptions: OptionSelectString[] = [
@@ -108,14 +108,9 @@ export const nacionalidadeOptions: OptionSelectNumber[] = [
   { value: 1, label: "Brasil" }
 ]
 
-export const beneficiosOptions: OptionSelectString[] = [
-  { value: "41", label: "41" },
-  { value: "42", label: "42" },
-  { value: "43", label: "43" },
-  { value: "44", label: "44" },
-  { value: "45", label: "45" },
-  { value: "46", label: "46" },
-  { value: "47", label: "47" },
+export const beneficiosOptions: OptionSelectNumber[] = [
+  { value: 41, label: "41" },
+  { value: 42, label: "42" }
 ]
 
 export const conveniosOptions: OptionSelectNumber[] = [

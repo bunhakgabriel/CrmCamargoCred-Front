@@ -43,7 +43,7 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
         return {
             info_bancarias: [
                 {
-                    banco: '',
+                    banco: 0,
                     agencia: '',
                     tipo_conta: '',
                     conta: ''
@@ -51,8 +51,8 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
             ],
             info_beneficio: [
                 {
-                    beneficio: '',
-                    convenio: '',
+                    beneficio: 0,
+                    convenio: 0,
                     margem: ''
                 }
             ]
@@ -65,9 +65,9 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
         mutationFn: ({ cliente }: { cliente: ICliente, documentos: ArquivoUpload[] }) => ClienteService.salvarCliente(cliente),
         onSuccess: (data, variables) => {
             const { documentos } = variables
+            const idCliente = data.data.id_cliente
 
-            if (documentos && documentos?.length > 0) {
-                const idCliente = data.data.id_cliente
+            if (documentos && documentos?.length > 0 && idCliente) {
                 uploadDocumentos(idCliente, documentos)
             } else {
                 toast.success('Cliente salvo com sucesso!')
@@ -106,6 +106,9 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
 
     function onSubmit(data: IClienteForm) {
         const cliente: ICliente = parseClienteRequest(data)
+        console.log(cliente)
+        debugger
+        return
         mutation.mutate({ cliente, documentos: data.documentos || [] })
     }
 
