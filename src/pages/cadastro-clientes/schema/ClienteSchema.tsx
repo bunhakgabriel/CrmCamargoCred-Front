@@ -59,7 +59,11 @@ export const clienteSchema = Yup.object({
     })
       .test('info_bancarias', 'Preencha todos os campos de informações bancarias', value => {
         const { banco, agencia, tipo_conta, conta } = value
-        if (!banco && !agencia && !tipo_conta && !conta) return true
+
+        const todosCamposPreenchidos = banco && agencia && tipo_conta && conta
+        const nenhumCampoPreenchido = !banco && !agencia && !tipo_conta && !conta
+
+        if (todosCamposPreenchidos || nenhumCampoPreenchido) return true
         return false
       })
   ).default([]),
@@ -72,7 +76,11 @@ export const clienteSchema = Yup.object({
     })
       .test('info_beneficio', 'Preencha todos os campos de informações do beneficio', value => {
         const { beneficio, convenio, margem } = value
-        if (!beneficio && !convenio && !margem) return true
+
+        const todosCamposPreenchidos = beneficio && convenio && margem
+        const nenhumCampoPreenchido = !beneficio && !convenio && !margem 
+
+        if (todosCamposPreenchidos || nenhumCampoPreenchido) return true
         return false
       })
   ).default([]),
