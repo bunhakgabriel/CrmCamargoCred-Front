@@ -15,3 +15,19 @@ export function parseEnderecoRequest(obj: Endereco): Endereco | undefined {
 
     return resp
 }
+
+export function parseEnderecoResponse(obj: Endereco | undefined): Endereco {
+    let resp = {} as Endereco
+
+    if(!obj){
+        resp.bairro = ''
+        resp.cep = ''
+        resp.cidade_estado = ''
+        resp.complemento = ''
+        resp.numero = ''
+        resp.rua = ''
+        return resp;
+    }
+
+    return obj
+}

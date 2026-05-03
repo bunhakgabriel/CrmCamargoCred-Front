@@ -1,5 +1,5 @@
 import type { Conjugue } from "../../../interfaces/ICliente";
-import { parseDateRequest } from "./parseDate";
+import { parseDateRequest, parseDateResponse } from "./parseDate";
 
 type ConjugueParam = {
     nome?: string
@@ -23,4 +23,20 @@ export function parseConjugueRequest(obj: ConjugueParam): Conjugue | undefined {
     }
 
     return resp
+}
+
+export function parseConjugueResponse(obj: Conjugue | undefined): ConjugueParam {
+    let resp = {} as ConjugueParam;
+
+    if(!obj){
+        resp.data_nascimento = ''
+        resp.documento = ''
+        resp.naturalidade = ''
+        resp.nome = ''
+        return resp;
+    }
+
+    const data_nascimento = obj.data_nascimento ? parseDateResponse(obj.data_nascimento) : ''
+    resp = { ...obj, data_nascimento: data_nascimento };
+    return resp;
 }

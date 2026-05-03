@@ -1,5 +1,6 @@
 import type { InfoBeneficio } from "../../../interfaces/ICliente";
 import { formatMoneyToNumber } from "../../../utils/format-money";
+import { mask } from "../../../utils/masks";
 
 type InfoBeneficioParam = {
     beneficio?: number 
@@ -20,4 +21,16 @@ export function parseInfoBeneficioRequest(obj: InfoBeneficioParam[]): InfoBenefi
         }));
 
     return resp
+}
+
+export function parseInfoBeneficioResponse(obj: InfoBeneficio[]) : InfoBeneficioParam[]{
+    if(obj.length == 0) return []
+
+    const resp = obj.map(value => ({
+        beneficio: value.beneficio,
+        convenio: value.convenio,
+        margem: mask(value.margem|| '', 'currencyBRL')
+    }))
+
+    return resp;
 }

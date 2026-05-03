@@ -2,11 +2,11 @@ import type { ICliente } from "../../../interfaces/ICliente"
 import { mask } from "../../../utils/masks"
 import { onlyNumbersToString } from "../../../utils/only-numbers"
 import type { IClienteForm } from "../schema/ClienteSchema"
-import { parseConjugueRequest } from "./parseConjugue"
-import { parseDateRequest } from "./parseDate"
-import { parseEnderecoRequest } from "./parseEndereco"
+import { parseConjugueRequest, parseConjugueResponse } from "./parseConjugue"
+import { parseDateRequest, parseDateResponse } from "./parseDate"
+import { parseEnderecoRequest, parseEnderecoResponse } from "./parseEndereco"
 import { parseInfoBancariaRequest } from "./parseInfoBancarias"
-import { parseInfoBeneficioRequest } from "./parseInfoBeneficio"
+import { parseInfoBeneficioRequest, parseInfoBeneficioResponse } from "./parseInfoBeneficio"
 
 export function parseClienteRequest(data: IClienteForm): ICliente {
     return {
@@ -41,15 +41,32 @@ export function parseClienteRequest(data: IClienteForm): ICliente {
 
 export function parseClienteResponse(cliente: ICliente): IClienteForm {
     return {
-        ...cliente,
-        telefone_1: mask(cliente.telefone_1, 'telefone'),
-        cpf: mask(cliente.cpf, 'cpf'),
-        data_nascimento: parseDateResponse(cliente.data_nascimento),
-        data_emissao_rg: parseDateResponse(cliente.data_emissao_rg),
-        conjugue: {
-            ...cliente.conjugue,
-            data_nascimento: parseDateResponse(cliente.conjugue.data_nascimento)
-        }
+        id_cliente: cliente.id_cliente,
+        cpf: cliente.cpf,
+        nome: cliente.nome,
+        sexo: cliente.sexo || undefined,
+        data_nascimento: cliente.data_nascimento ? parseDateResponse(cliente.data_nascimento) : '',
+        naturalidade: cliente.naturalidade || undefined,
+        nacionalidade: cliente.nacionalidade || undefined,
+        rg: cliente.rg,
+        data_emissao_rg: cliente.data_emissao_rg ? parseDateResponse(cliente.data_emissao_rg) : '',
+        orgao_emissor_rg: cliente.orgao_emissor_rg || undefined,
+        uf_rg: cliente.uf_rg || undefined,
+        telefone_1: cliente.telefone_1 ? mask(cliente.telefone_1, 'telefone') : '',
+        telefone_2: cliente.telefone_2 ? mask(cliente.telefone_2, 'telefone') : '',
+        telefone_3: cliente.telefone_3 ? mask(cliente.telefone_3, 'telefone') : '',
+        observacoes: cliente.observacoes || undefined,
+        email: cliente.email || undefined,
+        info_bancarias: cliente.info_bancarias,
+        info_beneficio: parseInfoBeneficioResponse(cliente.info_beneficio),
+        endereco: parseEnderecoResponse(cliente.endereco),
+        nome_pai: cliente.nome_pai || undefined,
+        nome_mae: cliente.nome_mae || undefined,
+        grau_instrucao: cliente.grau_instrucao,
+        estado_civil: cliente.estado_civil,
+        endereco_correspondencia: cliente.endereco_correspondencia,
+        num_dependentes: cliente.num_dependentes,
+        conjugue: parseConjugueResponse(cliente.conjugue)
     }
 }
 

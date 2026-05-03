@@ -16,7 +16,7 @@ import InformacoesContato from "./etapas/etapa-3/InformacoesContato";
 import InformacoesAdicionais from "./etapas/etapa-4/InformacoesAdicionais";
 import Documentos from "./etapas/etapa-5/Documentos";
 import type { ArquivoUpload } from "../../types/ArquivoUpload";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 type cadastroClienteProps = {
     cliente?: ICliente | null
@@ -25,14 +25,17 @@ type cadastroClienteProps = {
 }
 
 export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: cadastroClienteProps) {
+    const defaultFormValues = useMemo(() => {
+        return cliente ? parseClienteResponse(cliente) : defaultValues()
+    }, [cliente])
+
     const form = useForm<IClienteForm>({
         resolver: yupResolver(clienteSchema) as Resolver<IClienteForm>,
         mode: 'onChange',
-        defaultValues: cliente ? parseClienteResponse(cliente) : defaultValues()
+        defaultValues: defaultFormValues
     })
 
     const { control } = form
-
     const obj = useWatch({ control })
 
     useEffect(() => {
@@ -106,9 +109,6 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
 
     function onSubmit(data: IClienteForm) {
         const cliente: ICliente = parseClienteRequest(data)
-        console.log(cliente)
-        debugger
-        return
         mutation.mutate({ cliente, documentos: data.documentos || [] })
     }
 

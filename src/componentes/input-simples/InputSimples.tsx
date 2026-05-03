@@ -14,6 +14,7 @@ type InputSimplesProps<T extends FieldValues> = {
   mask?: (value: string) => string
   maxLength?: number
   type?: 'text' | 'textArea'
+  disabled?: boolean
 }
 
 export default function InputSimples<T extends FieldValues>({
@@ -23,7 +24,8 @@ export default function InputSimples<T extends FieldValues>({
   error,
   mask,
   maxLength,
-  type = 'text'
+  type = 'text',
+  disabled
 }: InputSimplesProps<T>) {
 
   const registerProps = register(name, {
@@ -44,9 +46,11 @@ export default function InputSimples<T extends FieldValues>({
           maxLength={maxLength}
           className={clsx(
             "h-10 border border-gray-300 bg-gray-50 rounded-lg px-2 py-0.5 text-sm",
-            { "border-red-500": error }
+            { "border-red-500": error },
+            { "bg-gray-200": disabled }
           )}
           type="text"
+          disabled={disabled}
         />
 
         {error && (

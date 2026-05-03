@@ -7,7 +7,8 @@ import { mask } from "../../../../utils/masks";
 
 export default function InformacoesBasicas() {
 
-    const { register, formState: { errors }, control } = useFormContext<IClienteForm>();
+    const { register, formState: { errors }, control, getValues } = useFormContext<IClienteForm>();
+    const idCliente = getValues('id_cliente')
 
     return (
         <div className="flex flex-col gap-3">
@@ -21,6 +22,7 @@ export default function InformacoesBasicas() {
                     error={errors.cpf}
                     maxLength={14}
                     mask={(value) => mask(value, 'cpf')}
+                    disabled={!!idCliente}
                 />
                 <InputSimples
                     label="Nome Cliente"

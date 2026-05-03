@@ -89,7 +89,14 @@ function cepMask(value: string): string {
     return digits
 }
 
-function currencyBRLMask(value: string): string {
+function currencyBRLMask(value: string | number): string {
+    if (typeof value === 'number') {
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+        }).format(value);
+    }
+
     let digits = value.replace(/\D/g, '');
 
     if (!digits) return '';
@@ -102,7 +109,16 @@ function currencyBRLMask(value: string): string {
     }).format(number);
 }
 
-export function mask(value: string, mask: tipoMask): string {
+export function mask(value: string | number, mask: tipoMask): string {
+    if (typeof value == 'number') {
+        switch (mask) {
+            case 'currencyBRL':
+                return currencyBRLMask(value)
+            default:
+                return ''
+        }
+    }
+
     switch (mask) {
         case 'apenasLetras':
             return apenasLetras(value)
