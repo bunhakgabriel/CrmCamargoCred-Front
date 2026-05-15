@@ -9,7 +9,28 @@ export default function UploadFiles() {
   const [fileDelete, setFileDelete] = useState<ArquivoUpload | null>(null)
   const { control, getValues } = useFormContext<IClienteForm>();
 
+  async function handleDownload(file: ArquivoUpload) {
+    const fileUrl = file.url || (file.file ? URL.createObjectURL(file.file) : null)
+    const fileName =
+      file.file?.name ||
+      file.url?.split('/').pop()?.substring(37)
 
+    if (!fileUrl) return
+
+    const response = await fetch(fileUrl)
+    const blob = await response.blob()
+
+    const url = window.URL.createObjectURL(blob)
+
+    const a = document.createElement('a')
+    a.href = url
+    a.download = fileName || 'arquivo'
+    document.body.appendChild(a)
+    a.click()
+
+    a.remove()
+    window.URL.revokeObjectURL(url)
+  }
 
   return (
     <Controller
@@ -30,8 +51,8 @@ export default function UploadFiles() {
               })
               .filter(newFile => {
                 return !existingFiles.some(existingFile => {
-                  return newFile?.file?.name == existingFile?.file?.name &&
-                    newFile?.file?.size == existingFile?.file?.size
+                  return newFile?.file?.name == existingFile?.file?.name ||
+                    existingFile?.url?.includes(newFile?.file?.name.replaceAll(' ', '_'))
                 })
               })
 
@@ -45,10 +66,14 @@ export default function UploadFiles() {
           const existingFiles = getValues('documentos') || []
 
           const updatedFiles = existingFiles.filter(existingFile => {
-            return !(
-              existingFile?.file?.name === file?.file?.name &&
-              existingFile?.file?.size === file?.file?.size
-            )
+            const validate1 = existingFile?.file && file?.file &&
+              existingFile?.file?.name === file?.file?.name
+            if (validate1) return false
+
+            const validate2 = existingFile?.url?.includes((file.url || file.file?.name) as string)
+            if (validate2) return false
+
+            return true
           })
 
           field.onChange(updatedFiles)
@@ -76,7 +101,7 @@ export default function UploadFiles() {
             <div className="flex flex-col gap-2 py-2">
               {field.value?.map((file: ArquivoUpload) => {
 
-                const fileName = file.file?.name || file.url?.split('/').pop()
+                const fileName = file.file?.name || file.url?.split('/').pop()?.substring(37)
                 const fileUrl = file.url || (file.file ? URL.createObjectURL(file.file) : null)
 
                 return (
@@ -108,13 +133,13 @@ export default function UploadFiles() {
                         <IoEye size={18} />
                       </button>
 
-                      <a
-                        href={fileUrl || undefined}
-                        download={fileName}
+                      <button
+                        type="button"
+                        onClick={() => handleDownload(file)}
                         className="text-gray-600 hover:text-gray-800 transition"
                       >
                         <IoDownload size={18} />
-                      </a>
+                      </button>
 
                       <button
                         onClick={() => setFileDelete(file)}

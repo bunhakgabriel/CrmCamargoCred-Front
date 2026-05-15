@@ -3,9 +3,10 @@ import { formatMoneyToNumber } from "../../../utils/format-money";
 import { mask } from "../../../utils/masks";
 
 type InfoBeneficioParam = {
-    beneficio?: number 
-    convenio?: number 
-    margem?: string 
+    id?: number
+    beneficio?: number
+    convenio?: number
+    margem?: string
 }
 
 export function parseInfoBeneficioRequest(obj: InfoBeneficioParam[]): InfoBeneficio[] {
@@ -15,6 +16,7 @@ export function parseInfoBeneficioRequest(obj: InfoBeneficioParam[]): InfoBenefi
                 !!value.margem && !!value.convenio && !!value.beneficio
         )
         .map(value => ({
+            id: value.id,
             beneficio: Number(value.beneficio),
             convenio: Number(value.convenio),
             margem: formatMoneyToNumber(value.margem || '')
@@ -23,13 +25,21 @@ export function parseInfoBeneficioRequest(obj: InfoBeneficioParam[]): InfoBenefi
     return resp
 }
 
-export function parseInfoBeneficioResponse(obj: InfoBeneficio[]) : InfoBeneficioParam[]{
-    if(obj.length == 0) return []
+export function parseInfoBeneficioResponse(obj: InfoBeneficio[]): InfoBeneficioParam[] {
+    if (obj.length == 0) {
+        return [{
+            id: undefined,
+            beneficio: 0,
+            convenio: 0,
+            margem: ''
+        }]
+    }
 
     const resp = obj.map(value => ({
+        id: value.id,
         beneficio: value.beneficio,
         convenio: value.convenio,
-        margem: mask(value.margem|| '', 'currencyBRL')
+        margem: mask(value.margem || '', 'currencyBRL')
     }))
 
     return resp;

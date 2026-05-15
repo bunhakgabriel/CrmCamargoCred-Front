@@ -1,7 +1,6 @@
 import { FiEye } from "react-icons/fi";
 import { LuPencil } from "react-icons/lu";
 import { MdOutlineDeleteOutline } from "react-icons/md";
-import { toast } from "sonner";
 import type { ICliente } from "../../../../interfaces/ICliente";
 import { type ICellRendererParams } from "ag-grid-community";
 
@@ -9,16 +8,26 @@ export default function AcoesGridClientes(
     props: ICellRendererParams<ICliente> &
     {
         setClienteDelete: (cliente: ICliente) => void,
-        handleEditCliente: (id: number) => void
+        handleEditCliente: (id: number) => void,
+        handleViewCliente: (id: number) => void,
     }
 ) {
-    const handleView = () => toast.info(`Visualizar: ${props.data?.nome}`);
-    const handleEdit = () => {
-        if (props.data) {
-            props.handleEditCliente(props.data.id_cliente);
+    const handleView = () => {
+        const idCliente = props?.data?.id_cliente
+
+        if (idCliente) {
+            props.handleViewCliente(idCliente);
         }
     }
-    
+
+    const handleEdit = () => {
+        const idCliente = props?.data?.id_cliente
+
+        if (idCliente) {
+            props.handleEditCliente(idCliente);
+        }
+    }
+
     const handleDelete = () => {
         if (props.data) {
             props.setClienteDelete(props.data);

@@ -19,7 +19,7 @@ import type { ArquivoUpload } from "../../types/ArquivoUpload";
 import { useEffect, useMemo } from "react";
 
 type cadastroClienteProps = {
-    cliente?: ICliente | null
+    cliente?: ICliente & { documentos: ArquivoUpload[] } | null
     onCloseModal?: () => void
     resetGrid?: () => void
 }
@@ -46,6 +46,7 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
         return {
             info_bancarias: [
                 {
+                    id: undefined,
                     banco: 0,
                     agencia: '',
                     tipo_conta: '',
@@ -54,6 +55,7 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
             ],
             info_beneficio: [
                 {
+                    id: undefined,
                     beneficio: 0,
                     convenio: 0,
                     margem: ''
@@ -100,8 +102,12 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
         if (!documentos || documentos?.length == 0) return
         const formData = new FormData()
 
-        documentos.filter(a => a.file).forEach(file => {
-            formData.append('documentos', file.file as File)
+        documentos.filter(a => a.file || a.url).forEach(doc => {
+            if(doc.file){
+                formData.append('documentos', doc.file as File)
+            } else if (doc.url){
+                formData.append('urls', doc.url)
+            }
         })
 
         mutationUploadDocumentos.mutate({ idCliente, formData })

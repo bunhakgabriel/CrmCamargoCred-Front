@@ -1,4 +1,5 @@
 export type InfoBancarias = {
+    id?: number
     banco?: number 
     agencia?: string 
     tipo_conta?: string 
@@ -6,6 +7,7 @@ export type InfoBancarias = {
 }
 
 export type InfoBeneficio = {
+    id?: number
     beneficio?: number 
     convenio?: number 
     margem?: number 
