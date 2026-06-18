@@ -32,10 +32,10 @@ export function parseClienteRequest(data: IClienteForm): ICliente {
         endereco: parseEnderecoRequest(data.endereco),
         nome_pai: data.nome_pai || undefined,
         nome_mae: data.nome_mae || undefined,
-        grau_instrucao: data.grau_instrucao,
-        estado_civil: data.estado_civil,
-        endereco_correspondencia: data.endereco_correspondencia,
-        num_dependentes: data.num_dependentes,
+        grau_instrucao: data.grau_instrucao || undefined,
+        estado_civil: data.estado_civil || undefined,
+        endereco_correspondencia: data.endereco_correspondencia || undefined,
+        num_dependentes: data.num_dependentes || undefined,
         conjugue: parseConjugueRequest(data.conjugue)
     }
 }

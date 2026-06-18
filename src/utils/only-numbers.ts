@@ -1,3 +1,3 @@
-export function onlyNumbersToString(value?: string): string {
+export function onlyNumbersToString(value?: string | null): string {
     return value?.replace(/\D/g, '') ?? '';
 }

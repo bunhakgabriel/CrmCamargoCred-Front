@@ -14,12 +14,12 @@ export type InfoBeneficio = {
 }
 
 export type Endereco = {
-    cep?: string 
-    rua?: string 
-    cidade_estado?: string 
-    bairro?: string 
-    numero?: string 
-    complemento?: string 
+    cep?: string | null
+    rua?: string | null
+    cidade_estado?: string | null 
+    bairro?: string | null
+    numero?: string | null
+    complemento?: string | null
 }
 
 export type Conjugue = {
