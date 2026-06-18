@@ -6,3 +6,17 @@ export function parseInfoBancariaRequest(obj: InfoBancarias[]): InfoBancarias[] 
     })
     return resp
 }
+
+export function parseInfoBancariaResponse(obj: InfoBancarias[]): InfoBancarias[] {
+    if (obj.length == 0) {
+        obj = [{
+            id: undefined,
+            banco: 0,
+            agencia: '',
+            tipo_conta: '',
+            conta: ''
+        }]
+    }
+
+    return obj
+}

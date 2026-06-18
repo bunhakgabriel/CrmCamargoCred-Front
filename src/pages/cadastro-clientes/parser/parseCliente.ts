@@ -1,11 +1,12 @@
 import type { ICliente } from "../../../interfaces/ICliente"
+import type { ArquivoUpload } from "../../../types/ArquivoUpload"
 import { mask } from "../../../utils/masks"
 import { onlyNumbersToString } from "../../../utils/only-numbers"
 import type { IClienteForm } from "../schema/ClienteSchema"
 import { parseConjugueRequest, parseConjugueResponse } from "./parseConjugue"
 import { parseDateRequest, parseDateResponse } from "./parseDate"
 import { parseEnderecoRequest, parseEnderecoResponse } from "./parseEndereco"
-import { parseInfoBancariaRequest } from "./parseInfoBancarias"
+import { parseInfoBancariaRequest, parseInfoBancariaResponse } from "./parseInfoBancarias"
 import { parseInfoBeneficioRequest, parseInfoBeneficioResponse } from "./parseInfoBeneficio"
 
 export function parseClienteRequest(data: IClienteForm): ICliente {
@@ -31,15 +32,15 @@ export function parseClienteRequest(data: IClienteForm): ICliente {
         endereco: parseEnderecoRequest(data.endereco),
         nome_pai: data.nome_pai || undefined,
         nome_mae: data.nome_mae || undefined,
-        grau_instrucao: data.grau_instrucao,
-        estado_civil: data.estado_civil,
-        endereco_correspondencia: data.endereco_correspondencia,
-        num_dependentes: data.num_dependentes,
+        grau_instrucao: data.grau_instrucao || undefined,
+        estado_civil: data.estado_civil || undefined,
+        endereco_correspondencia: data.endereco_correspondencia || undefined,
+        num_dependentes: data.num_dependentes || undefined,
         conjugue: parseConjugueRequest(data.conjugue)
     }
 }
 
-export function parseClienteResponse(cliente: ICliente): IClienteForm {
+export function parseClienteResponse(cliente: ICliente & { documentos?: ArquivoUpload[] }): IClienteForm {
     return {
         id_cliente: cliente.id_cliente,
         cpf: cliente.cpf,
@@ -57,7 +58,7 @@ export function parseClienteResponse(cliente: ICliente): IClienteForm {
         telefone_3: cliente.telefone_3 ? mask(cliente.telefone_3, 'telefone') : '',
         observacoes: cliente.observacoes || undefined,
         email: cliente.email || undefined,
-        info_bancarias: cliente.info_bancarias,
+        info_bancarias: parseInfoBancariaResponse(cliente.info_bancarias),
         info_beneficio: parseInfoBeneficioResponse(cliente.info_beneficio),
         endereco: parseEnderecoResponse(cliente.endereco),
         nome_pai: cliente.nome_pai || undefined,
@@ -66,7 +67,8 @@ export function parseClienteResponse(cliente: ICliente): IClienteForm {
         estado_civil: cliente.estado_civil,
         endereco_correspondencia: cliente.endereco_correspondencia,
         num_dependentes: cliente.num_dependentes,
-        conjugue: parseConjugueResponse(cliente.conjugue)
+        conjugue: parseConjugueResponse(cliente.conjugue),
+        documentos: cliente.documentos
     }
 }
 

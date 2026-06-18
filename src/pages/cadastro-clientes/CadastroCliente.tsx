@@ -2,7 +2,7 @@ import { FaUserPlus } from "react-icons/fa";
 import { LuSave } from "react-icons/lu";
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useForm, type Resolver, FormProvider, useWatch } from "react-hook-form";
+import { useForm, type Resolver, FormProvider } from "react-hook-form";
 import { clienteSchema, type IClienteForm } from "./schema/ClienteSchema";
 import type { ICliente } from "../../interfaces/ICliente";
 import { parseClienteRequest, parseClienteResponse } from "./parser/parseCliente";
@@ -16,10 +16,10 @@ import InformacoesContato from "./etapas/etapa-3/InformacoesContato";
 import InformacoesAdicionais from "./etapas/etapa-4/InformacoesAdicionais";
 import Documentos from "./etapas/etapa-5/Documentos";
 import type { ArquivoUpload } from "../../types/ArquivoUpload";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 type cadastroClienteProps = {
-    cliente?: ICliente | null
+    cliente?: ICliente & { documentos?: ArquivoUpload[] } | null
     onCloseModal?: () => void
     resetGrid?: () => void
 }
@@ -35,17 +35,11 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
         defaultValues: defaultFormValues
     })
 
-    const { control } = form
-    const obj = useWatch({ control })
-
-    useEffect(() => {
-        console.log(obj)
-    }, [obj])
-
     function defaultValues() {
         return {
             info_bancarias: [
                 {
+                    id: undefined,
                     banco: 0,
                     agencia: '',
                     tipo_conta: '',
@@ -54,6 +48,7 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
             ],
             info_beneficio: [
                 {
+                    id: undefined,
                     beneficio: 0,
                     convenio: 0,
                     margem: ''
@@ -70,7 +65,10 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
             const { documentos } = variables
             const idCliente = data.data.id_cliente
 
-            if (documentos && documentos?.length > 0 && idCliente) {
+            const isEdicao = !!cliente;
+            const temDocumentos = documentos && documentos.length > 0;
+
+            if ((isEdicao || temDocumentos) && idCliente) {
                 uploadDocumentos(idCliente, documentos)
             } else {
                 toast.success('Cliente salvo com sucesso!')
@@ -97,11 +95,14 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
 
 
     function uploadDocumentos(idCliente: number, documentos: ArquivoUpload[]) {
-        if (!documentos || documentos?.length == 0) return
         const formData = new FormData()
 
-        documentos.filter(a => a.file).forEach(file => {
-            formData.append('documentos', file.file as File)
+        documentos.filter(a => a.file || a.url).forEach(doc => {
+            if(doc.file){
+                formData.append('documentos', doc.file as File)
+            } else if (doc.url){
+                formData.append('urls', doc.url)
+            }
         })
 
         mutationUploadDocumentos.mutate({ idCliente, formData })

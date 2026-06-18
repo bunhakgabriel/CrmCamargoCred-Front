@@ -23,11 +23,12 @@ export default function InformacoesBancarias() {
     function adicionarConta() {
         const infoBancarias = getValues('info_bancarias')
 
-        if (infoBancarias.length == 2) {
-            return toast.info('Não é possível cadastrar mais de 2 contas bancárias!')
+        if (infoBancarias.length == 3) {
+            return toast.info('Não é possível cadastrar mais de 3 contas bancárias!')
         }
 
         appendBancarios({
+            id: undefined,
             banco: 0,
             agencia: '',
             tipo_conta: '',

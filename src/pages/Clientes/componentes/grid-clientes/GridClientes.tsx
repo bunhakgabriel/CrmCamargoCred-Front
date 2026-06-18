@@ -14,6 +14,7 @@ import ClienteService from "../../../cadastro-clientes/services/clienteService";
 import ConfirmDelete from "../../../../componentes/confirm-delete/ConfirmDelete";
 import AcoesGridClientes from "./AcoesGridClientes";
 import EditarCliente from "../EditarCliente";
+import VisualizarCliente from "../VisualizarCliente";
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -26,6 +27,7 @@ const dateFormatter = (params: { value: Date }) => {
 export default function GridClientes() {
     const [clienteDelete, setClienteDelete] = useState<ICliente | null>(null);
     const [clienteEdit, setClienteEdit] = useState<ICliente | null>(null);
+    const [clienteView, setClienteView] = useState<ICliente | null>(null);
 
     const gridRef = useRef<GridApi | null>(null);
 
@@ -44,25 +46,42 @@ export default function GridClientes() {
         }
     });
 
-    const mutationGetCliente = useMutation({
+    const mutationGetClienteEdit = useMutation({
         mutationFn: ClienteService.buscarClientePorId,
         onSuccess: (data) => {
-            setClienteEdit(data.data)
+            setClienteEdit(data.data);
         },
         onError: () => {
             toast.error("Erro ao buscar informações do cliente!")
             setClienteEdit(null);
         }
     })
+    
+    const mutationGetClienteView = useMutation({
+        mutationFn: ClienteService.buscarClientePorId,
+        onSuccess: (data) => {
+            setClienteView(data.data);
+        },
+        onError: () => {
+            toast.error("Erro ao buscar informações do cliente!")
+            setClienteView(null);
+        }
+    })
 
     const handleDeleteCliente = () => {
-        if (clienteDelete) {
-            mutationDelete.mutate(clienteDelete.id_cliente);
+        const idCliente = clienteDelete?.id_cliente
+
+        if (idCliente) {
+            mutationDelete.mutate(idCliente);
         }
     }
 
     const handleEditCliente = (id: number) => {
-        mutationGetCliente.mutate(id);
+        mutationGetClienteEdit.mutate(id);
+    }
+
+    const handleViewCliente = (id: number) => {
+        mutationGetClienteView.mutate(id);
     }
 
     const columnDefs = useMemo<ColDef<ICliente>[]>(
@@ -78,7 +97,8 @@ export default function GridClientes() {
                 cellRenderer: AcoesGridClientes,
                 cellRendererParams: {
                     setClienteDelete: setClienteDelete,
-                    handleEditCliente: handleEditCliente
+                    handleEditCliente: handleEditCliente,
+                    handleViewCliente: handleViewCliente
                 },
                 width: 130,
                 sortable: false,
@@ -155,6 +175,10 @@ export default function GridClientes() {
                 cliente={clienteEdit}
                 onClose={() => setClienteEdit(null)}
                 resetGrid={() => gridRef.current?.refreshInfiniteCache()}
+            />
+            <VisualizarCliente
+                data={clienteView}
+                onClose={() => setClienteView(null)}
             />
         </div>
     );

@@ -11,47 +11,53 @@ export const clienteSchema = Yup.object({
       return result === true
     }),
   nome: Yup.string().required('Campo obrigatório'),
-  sexo: Yup.string(),
+  sexo: Yup.string().nullable(),
   data_nascimento: Yup.string()
+    .nullable()
     .test('data_nascimento', 'Data inválida', value => {
       if (!value) return true
       const result = value == '' ? true : validarCampo(value, "data")
       return result === true
     }),
-  naturalidade: Yup.string(),
-  nacionalidade: Yup.number(),
+  naturalidade: Yup.string().nullable(),
+  nacionalidade: Yup.number().nullable(),
   rg: Yup.string().required('Campo obrigatório'),
   data_emissao_rg: Yup.string()
+    .nullable()
     .test('data_emissao_rg', 'Data inválida', value => {
       if (!value) return true
       const result = value == '' ? true : validarCampo(value, "data")
       return result === true
     }),
-  orgao_emissor_rg: Yup.string(),
-  uf_rg: Yup.string(),
+  orgao_emissor_rg: Yup.string().nullable(),
+  uf_rg: Yup.string().nullable(),
   telefone_1: Yup.string()
+    .nullable()
     .test('telefone_1', 'Telefone inválido', value => {
       if (!value) return true
       const result = value == '' ? true : validarCampo(value, "telefone")
       return result === true
     }),
   telefone_2: Yup.string()
+    .nullable()
     .test('telefone_2', 'Telefone inválido', value => {
       if (!value) return true
       const result = value == '' ? true : validarCampo(value, "telefone")
       return result === true
     }),
   telefone_3: Yup.string()
+    .nullable()
     .test('telefone_3', 'Telefone inválido', value => {
       if (!value) return true
       const result = value == '' ? true : validarCampo(value, "telefone")
       return result === true
     }),
-  observacoes: Yup.string(),
-  email: Yup.string(),
+  observacoes: Yup.string().nullable(),
+  email: Yup.string().nullable(),
 
   info_bancarias: Yup.array().of(
     Yup.object({
+      id: Yup.number(),
       banco: Yup.number(),
       agencia: Yup.string(),
       tipo_conta: Yup.string(),
@@ -70,6 +76,7 @@ export const clienteSchema = Yup.object({
 
   info_beneficio: Yup.array().of(
     Yup.object({
+      id: Yup.number(),
       beneficio: Yup.number(),
       convenio: Yup.number(),
       margem: Yup.string(),
@@ -78,7 +85,7 @@ export const clienteSchema = Yup.object({
         const { beneficio, convenio, margem } = value
 
         const todosCamposPreenchidos = beneficio && convenio && margem
-        const nenhumCampoPreenchido = !beneficio && !convenio && !margem 
+        const nenhumCampoPreenchido = !beneficio && !convenio && !margem
 
         if (todosCamposPreenchidos || nenhumCampoPreenchido) return true
         return false
@@ -87,36 +94,39 @@ export const clienteSchema = Yup.object({
 
   endereco: Yup.object({
     cep: Yup.string()
+      .nullable()
       .test('cep', 'Cep inválido', value => {
         if (!value) return true
         return value.length == 9 || value.length == 0
       }),
-    rua: Yup.string(),
-    cidade_estado: Yup.string(),
-    bairro: Yup.string(),
-    numero: Yup.string(),
-    complemento: Yup.string(),
+    rua: Yup.string().nullable(),
+    cidade_estado: Yup.string().nullable(),
+    bairro: Yup.string().nullable(),
+    numero: Yup.string().nullable(),
+    complemento: Yup.string().nullable(),
   }),
 
-  nome_pai: Yup.string(),
-  nome_mae: Yup.string(),
-  grau_instrucao: Yup.number(),
-  estado_civil: Yup.number(),
-  endereco_correspondencia: Yup.string(),
+  nome_pai: Yup.string().nullable(),
+  nome_mae: Yup.string().nullable(),
+  grau_instrucao: Yup.number().nullable(),
+  estado_civil: Yup.number().nullable(),
+  endereco_correspondencia: Yup.string().nullable(),
   num_dependentes: Yup.number()
+    .nullable()
     .transform((value, originalValue) => {
       return originalValue === "" ? undefined : value;
     }),
   conjugue: Yup.object({
-    nome: Yup.string(),
+    nome: Yup.string().nullable(),
     data_nascimento: Yup.string()
+      .nullable()
       .test('conjugue.data_nascimento', 'Data inválida', value => {
         if (!value) return true
         const result = value == '' ? true : validarCampo(value, "data")
         return result === true
       }),
-    documento: Yup.string(),
-    naturalidade: Yup.string()
+    documento: Yup.string().nullable(),
+    naturalidade: Yup.string().nullable()
   }),
 
   documentos: Yup.mixed<ArquivoUpload[]>().nullable()

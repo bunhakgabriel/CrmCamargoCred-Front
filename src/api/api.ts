@@ -5,7 +5,7 @@ import { useAuthStore } from "../store/authStore";
 import { toast } from "sonner";
 
 const api = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: import.meta.env.VITE_BASE_URL,
 });
 
 api.interceptors.request.use(
@@ -15,9 +15,10 @@ api.interceptors.request.use(
 
     if (user) {
       const token = await user.getIdToken();
-
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    config.headers['ngrok-skip-browser-warning'] = 'true';
 
     return config;
   },

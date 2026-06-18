@@ -2,10 +2,10 @@ import type { Conjugue } from "../../../interfaces/ICliente";
 import { parseDateRequest, parseDateResponse } from "./parseDate";
 
 type ConjugueParam = {
-    nome?: string
-    data_nascimento?: string
-    documento?: string
-    naturalidade?: string
+    nome?: string | null
+    data_nascimento?: string | null
+    documento?: string | null
+    naturalidade?: string | null
 }
 
 export function parseConjugueRequest(obj: ConjugueParam): Conjugue | undefined {
