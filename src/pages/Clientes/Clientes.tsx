@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "../../routes/rotas";
 import GridClientes from "./componentes/grid-clientes/GridClientes";
 
-export default function Clientes() {
+export function Clientes() {
     const navigate = useNavigate()
 
     return (

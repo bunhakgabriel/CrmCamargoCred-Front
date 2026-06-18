@@ -1,7 +1,7 @@
 import App from "../App";
 import CadastroCliente from "../pages/cadastro-clientes/CadastroCliente";
-import Clientes from "../pages/clientes/Clientes";
-import Dashboard from "../pages/dashboard/Dashboard";
+import { Clientes } from "../pages/clientes/Clientes";
+import { Dashboard } from "../pages/dashboard/Dashboard";
 import { Login } from "../pages/login/Login";
 import { PrivateRoute } from "./PrivateRoutes";
 import { PATH } from "./rotas";

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PATH } from "../../routes/rotas"
 import { FiUsers } from "react-icons/fi";
 
-export default function Dashboard() {
+export function Dashboard() {
   const navigate = useNavigate();
 
   return (
