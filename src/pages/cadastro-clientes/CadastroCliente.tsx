@@ -19,7 +19,7 @@ import type { ArquivoUpload } from "../../types/ArquivoUpload";
 import { useMemo } from "react";
 
 type cadastroClienteProps = {
-    cliente?: ICliente & { documentos: ArquivoUpload[] } | null
+    cliente?: ICliente & { documentos?: ArquivoUpload[] } | null
     onCloseModal?: () => void
     resetGrid?: () => void
 }
