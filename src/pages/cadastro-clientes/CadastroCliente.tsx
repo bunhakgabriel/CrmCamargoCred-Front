@@ -16,7 +16,7 @@ import InformacoesContato from "./etapas/etapa-3/InformacoesContato";
 import InformacoesAdicionais from "./etapas/etapa-4/InformacoesAdicionais";
 import Documentos from "./etapas/etapa-5/Documentos";
 import type { ArquivoUpload } from "../../types/ArquivoUpload";
-import { useMemo } from "react";
+import { useEffect } from "react";
 
 type cadastroClienteProps = {
     cliente?: ICliente & { documentos?: ArquivoUpload[] } | null
@@ -25,15 +25,19 @@ type cadastroClienteProps = {
 }
 
 export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: cadastroClienteProps) {
-    const defaultFormValues = useMemo(() => {
-        return cliente ? parseClienteResponse(cliente) : defaultValues()
-    }, [cliente])
 
     const form = useForm<IClienteForm>({
         resolver: yupResolver(clienteSchema) as Resolver<IClienteForm>,
-        mode: 'onChange',
-        defaultValues: defaultFormValues
+        mode: 'onChange'
     })
+
+    useEffect(() => {
+        if (cliente) {
+            form.reset(parseClienteResponse(cliente));
+        } else {
+            form.reset(defaultValues());
+        }
+    }, [cliente]);
 
     function defaultValues() {
         return {
@@ -98,9 +102,9 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
         const formData = new FormData()
 
         documentos.filter(a => a.file || a.url).forEach(doc => {
-            if(doc.file){
+            if (doc.file) {
                 formData.append('documentos', doc.file as File)
-            } else if (doc.url){
+            } else if (doc.url) {
                 formData.append('urls', doc.url)
             }
         })
