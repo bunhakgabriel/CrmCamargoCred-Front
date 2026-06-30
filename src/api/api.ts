@@ -3,13 +3,22 @@ import { app } from "../firebase/firebaseConfig";
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthStore } from "../store/authStore";
 import { toast } from "sonner";
+import { useLoadingStore } from "../store/loadStore";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
 });
 
+const MIN_LOADING_TIME = 1200;
+
 api.interceptors.request.use(
   async (config) => {
+    useLoadingStore.getState().startLoading();
+
+    config.metadata = {
+      startTime: Date.now(),
+    };
+
     const auth = getAuth(app);
     const user = auth.currentUser;
 
@@ -22,12 +31,39 @@ api.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    useLoadingStore.getState().stopLoading();
+    return Promise.reject(error)
+  }
 );
 
 api.interceptors.response.use(
-  (response) => response,
+  async (response) => {
+    const start = response.config.metadata?.startTime ?? Date.now();
+    const elapsed = Date.now() - start;
+
+    if (elapsed < MIN_LOADING_TIME) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, MIN_LOADING_TIME - elapsed)
+      );
+    }
+
+    useLoadingStore.getState().stopLoading();
+
+    return response;
+  },
   async (error) => {
+    const start = error.config?.metadata?.startTime ?? Date.now();
+    const elapsed = Date.now() - start;
+
+    if (elapsed < MIN_LOADING_TIME) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, MIN_LOADING_TIME - elapsed)
+      );
+    }
+
+    useLoadingStore.getState().stopLoading();
+
     const status = error?.response?.status;
 
     // 🔥 TRATAMENTO GLOBAL
@@ -41,7 +77,7 @@ api.interceptors.response.use(
       }
 
       useAuthStore.getState().setUser(null);
-      toast.error(error?.response?.data?.message || 'Não autorizado!');
+      toast.error(error?.response?.data?.message || "Não autorizado!");
     }
 
     const message =
