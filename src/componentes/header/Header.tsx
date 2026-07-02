@@ -29,6 +29,7 @@ function Header() {
     { nome: "Painel", path: PATH.PAINEL, icon: <MdDashboard /> },
     { nome: "Novo Cliente", path: PATH.NOVOCLIENTE, icon: <FaUserPlus /> },
     { nome: "Clientes", path: PATH.CLIENTES, icon: <FiUsers /> },
+    { nome: "Vendedores", path: PATH.VENDEDORES, icon: <FiUsers /> }
   ];
 
   return (
