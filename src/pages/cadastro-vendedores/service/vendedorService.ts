@@ -31,6 +31,11 @@ const VendedorService = {
         return response.data;
     },
 
+    deletarVendedor: async (id: number): Promise<IApiResponse<null>> => {
+        const response = await api.delete<IApiResponse<null>>('/vendedor/deletar/' + id);
+        return response.data;
+    },
+
 };
 
 export default VendedorService;

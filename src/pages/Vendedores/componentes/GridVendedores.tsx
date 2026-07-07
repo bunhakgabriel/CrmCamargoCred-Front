@@ -9,10 +9,11 @@ import {
     type GridApi,
 } from "ag-grid-community";
 import ConfirmDelete from "../../../componentes/confirm-delete/ConfirmDelete";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import VendedorService from "../../cadastro-vendedores/service/vendedorService";
 import AcoesGridVendedores from "./AcoesGridVendedores";
 import CadastroVendedor from "../../cadastro-vendedores/CadastroVendedor";
+import { toast } from "sonner";
 
 type GridVendedorProps = {
     modalVendedorIsOpen: boolean;
@@ -26,6 +27,19 @@ export default function GridVendedores({ modalVendedorIsOpen, setModalVendedorIs
     const gridRef = useRef<GridApi | null>(null);
 
     const queryClient = useQueryClient();
+
+    const mutationDelete = useMutation({
+        mutationFn: VendedorService.deletarVendedor,
+        onSuccess: () => {
+            toast.success("Vendedor excluído com sucesso!");
+            gridRef.current?.refreshInfiniteCache();
+            setVendedorDelete(null);
+        },
+        onError: () => {
+            toast.error("Erro ao excluir vendedor!");
+            setVendedorDelete(null);
+        }
+    });
 
     const columnDefs = useMemo<ColDef<IVendedor>[]>(
         () => [
@@ -85,7 +99,7 @@ export default function GridVendedores({ modalVendedorIsOpen, setModalVendedorIs
         const idVendedor = vendedorDelete?.id_vendedor
 
         if (idVendedor) {
-            // mutationDelete.mutate(idVendedor);
+            mutationDelete.mutate(idVendedor);
         }
     }
 
@@ -113,9 +127,9 @@ export default function GridVendedores({ modalVendedorIsOpen, setModalVendedorIs
                 }}
             />
 
-            <CadastroVendedor 
-                isOpen={modalVendedorIsOpen} 
-                onClose={() => setModalVendedorIsOpen(false)} 
+            <CadastroVendedor
+                isOpen={modalVendedorIsOpen}
+                onClose={() => setModalVendedorIsOpen(false)}
                 resetGrid={() => gridRef.current?.refreshInfiniteCache()}
             />
 
