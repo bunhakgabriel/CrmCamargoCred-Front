@@ -5,6 +5,10 @@ import { vendedorSchema, type IVendedorForm } from "./schema/VendedorSchema";
 import InputSimples from "../../componentes/input-simples/InputSimples";
 import { mask } from "../../utils/masks";
 import { LuSave } from "react-icons/lu";
+import { useMutation } from "@tanstack/react-query";
+import VendedorService from "./service/vendedorService";
+import type { IVendedor } from "../../interfaces/IVendedor";
+import { toast } from "sonner";
 
 type CadastroVendedorProps = {
     isOpen: boolean;
@@ -18,10 +22,22 @@ export default function CadastroVendedor({ isOpen, onClose }: CadastroVendedorPr
         mode: 'onChange'
     })
 
-    const { register, formState: { errors }, handleSubmit } = form;
+    const { register, formState: { errors }, handleSubmit, reset } = form;
+
+    const mutation = useMutation({
+        mutationFn: (vendedor: IVendedor) => VendedorService.salvarVendedor(vendedor),
+        onSuccess: () => {
+            toast.success('Vendedor salvo com sucesso!')
+            reset();
+            onClose();
+        },
+        onError: (error) => {
+            toast.error(error.message)
+        }
+    })
 
     function onSubmit(data: IVendedorForm) {
-        console.log(data)
+        mutation.mutate(data as IVendedor);
     }
 
     return (
