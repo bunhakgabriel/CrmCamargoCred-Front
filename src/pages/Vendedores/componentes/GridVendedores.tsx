@@ -12,8 +12,14 @@ import ConfirmDelete from "../../../componentes/confirm-delete/ConfirmDelete";
 import { useQueryClient } from "@tanstack/react-query";
 import VendedorService from "../../cadastro-vendedores/service/vendedorService";
 import AcoesGridVendedores from "./AcoesGridVendedores";
+import CadastroVendedor from "../../cadastro-vendedores/CadastroVendedor";
 
-export default function GridVendedores() {
+type GridVendedorProps = {
+    modalVendedorIsOpen: boolean;
+    setModalVendedorIsOpen: (value: boolean) => void;
+};
+
+export default function GridVendedores({ modalVendedorIsOpen, setModalVendedorIsOpen }: GridVendedorProps) {
     const [vendedorDelete, setVendedorDelete] = useState<IVendedor | null>(null);
     const [vendedorEdit, setVendedorEdit] = useState<IVendedor | null>(null);
 
@@ -105,6 +111,12 @@ export default function GridVendedores() {
                     gridRef.current = params.api;
                     params.api.setGridOption('datasource', datasource);
                 }}
+            />
+
+            <CadastroVendedor 
+                isOpen={modalVendedorIsOpen} 
+                onClose={() => setModalVendedorIsOpen(false)} 
+                resetGrid={() => gridRef.current?.refreshInfiniteCache()}
             />
 
             <ConfirmDelete

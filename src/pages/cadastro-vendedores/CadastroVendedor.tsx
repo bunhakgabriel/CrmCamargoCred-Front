@@ -13,9 +13,10 @@ import { toast } from "sonner";
 type CadastroVendedorProps = {
     isOpen: boolean;
     onClose: () => void;
+    resetGrid: () => void;
 };
 
-export default function CadastroVendedor({ isOpen, onClose }: CadastroVendedorProps) {
+export default function CadastroVendedor({ isOpen, onClose, resetGrid }: CadastroVendedorProps) {
 
     const form = useForm<IVendedorForm>({
         resolver: yupResolver(vendedorSchema) as Resolver<IVendedorForm>,
@@ -30,6 +31,7 @@ export default function CadastroVendedor({ isOpen, onClose }: CadastroVendedorPr
             toast.success('Vendedor salvo com sucesso!')
             reset();
             onClose();
+            resetGrid();
         },
         onError: (error) => {
             toast.error(error.message)

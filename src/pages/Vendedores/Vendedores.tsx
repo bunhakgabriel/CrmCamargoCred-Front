@@ -1,7 +1,6 @@
 import { FaUserPlus } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
 import GridVendedores from "./componentes/GridVendedores";
-import CadastroVendedor from "../cadastro-vendedores/CadastroVendedor";
 import { useState } from "react";
 
 export function Vendedores() {
@@ -36,13 +35,11 @@ export function Vendedores() {
                     </button>
                 </div>
             </div>
-
-            <CadastroVendedor 
-                isOpen={modalVendedorIsOpen} 
-                onClose={() => setModalVendedorIsOpen(false)} 
-            />
             
-            <GridVendedores />
+            <GridVendedores 
+                modalVendedorIsOpen={modalVendedorIsOpen} 
+                setModalVendedorIsOpen={setModalVendedorIsOpen} 
+            />
         </div>
     )
 }
