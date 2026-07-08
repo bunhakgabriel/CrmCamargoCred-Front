@@ -34,6 +34,7 @@ export interface ICliente {
     cpf: string 
     nome: string
     sexo?: string 
+    vendedor?: number
     data_nascimento?: Date 
     naturalidade?: string 
     nacionalidade?: number 

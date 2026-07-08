@@ -12,6 +12,7 @@ export const clienteSchema = Yup.object({
     }),
   nome: Yup.string().required('Campo obrigatório'),
   sexo: Yup.string().nullable(),
+  vendedor: Yup.number().nullable(),
   data_nascimento: Yup.string()
     .nullable()
     .test('data_nascimento', 'Data inválida', value => {

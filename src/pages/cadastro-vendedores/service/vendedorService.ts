@@ -7,8 +7,8 @@ import type { OrdenacaoGrid } from "../../../types/OrdenacaoGrid"
 type BuscarVendedoresParams = {
     skip: number
     take: number
-    filtros: FiltrosGrid
-    ordenacao: OrdenacaoGrid
+    filtros?: FiltrosGrid
+    ordenacao?: OrdenacaoGrid
 }
 
 const VendedorService = {
@@ -23,6 +23,10 @@ const VendedorService = {
         filtros,
         ordenacao
     }: BuscarVendedoresParams): Promise<IApiResponse<IVendedor[], { total: number }>> => {
+
+        if(!filtros) filtros = { filterType: 'contains', type: 'nome', filter: '' }
+        if(!ordenacao) ordenacao = { colId: 'nome', sort: 'asc', type: 'default' }
+
         const response =
             await api.post<IApiResponse<IVendedor[], { total: number }>>('/vendedor/buscar', {
                 params: { skip, take, filtros, ordenacao }
