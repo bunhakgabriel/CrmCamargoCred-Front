@@ -2,8 +2,6 @@ import { useMemo, useRef, useState } from "react";
 import type { IVendedor } from "../../../interfaces/IVendedor";
 import { AgGridReact } from "ag-grid-react";
 import {
-    AllCommunityModule,
-    ModuleRegistry,
     type ColDef,
     themeAlpine,
     type GridApi,
@@ -41,6 +39,30 @@ export default function GridVendedores({ modalVendedorIsOpen, setModalVendedorIs
         }
     });
 
+    const mutationGetVendedorEdit = useMutation({
+        mutationFn: VendedorService.buscarVendedorPorId,
+        onSuccess: (data) => {
+            setVendedorEdit(data.data);
+            setModalVendedorIsOpen(true);
+        },
+        onError: () => {
+            toast.error("Erro ao buscar informações do vendedor!")
+            setVendedorEdit(null);
+        }
+    })
+
+    const handleDeleteVendedor = () => {
+        const idVendedor = vendedorDelete?.id_vendedor
+
+        if (idVendedor) {
+            mutationDelete.mutate(idVendedor);
+        }
+    }
+
+    const handleEditVendedor = (id: number) => {
+        mutationGetVendedorEdit.mutate(id);
+    }
+
     const columnDefs = useMemo<ColDef<IVendedor>[]>(
         () => [
             { field: "nome", headerName: "Nome", flex: 2, minWidth: 150, filter: true },
@@ -51,7 +73,7 @@ export default function GridVendedores({ modalVendedorIsOpen, setModalVendedorIs
                 cellRenderer: AcoesGridVendedores,
                 cellRendererParams: {
                     setVendedorDelete: setVendedorDelete,
-                    setVendedorEdit: setVendedorEdit,
+                    handleEditVendedor: handleEditVendedor,
                 },
                 width: 100,
                 sortable: false,
@@ -95,14 +117,6 @@ export default function GridVendedores({ modalVendedorIsOpen, setModalVendedorIs
         }
     };
 
-    const handleDeleteVendedor = () => {
-        const idVendedor = vendedorDelete?.id_vendedor
-
-        if (idVendedor) {
-            mutationDelete.mutate(idVendedor);
-        }
-    }
-
     const defaultColDef = useMemo<ColDef>(
         () => ({
             sortable: true,
@@ -128,8 +142,12 @@ export default function GridVendedores({ modalVendedorIsOpen, setModalVendedorIs
             />
 
             <CadastroVendedor
+                vendedor={vendedorEdit}
                 isOpen={modalVendedorIsOpen}
-                onClose={() => setModalVendedorIsOpen(false)}
+                onClose={() => {
+                    setModalVendedorIsOpen(false)
+                    setVendedorEdit(null)
+                }}
                 resetGrid={() => gridRef.current?.refreshInfiniteCache()}
             />
 

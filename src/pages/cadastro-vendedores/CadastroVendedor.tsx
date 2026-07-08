@@ -14,16 +14,36 @@ type CadastroVendedorProps = {
     isOpen: boolean;
     onClose: () => void;
     resetGrid: () => void;
+    vendedor?: IVendedor | null;
 };
 
-export default function CadastroVendedor({ isOpen, onClose, resetGrid }: CadastroVendedorProps) {
+export default function CadastroVendedor({ isOpen, onClose, resetGrid, vendedor }: CadastroVendedorProps) {
 
     const form = useForm<IVendedorForm>({
         resolver: yupResolver(vendedorSchema) as Resolver<IVendedorForm>,
-        mode: 'onChange'
+        mode: 'onChange',
+        values: defaultValues()
     })
-
+    
     const { register, formState: { errors }, handleSubmit, reset } = form;
+    
+    function defaultValues() {
+        if(vendedor) {
+            return {
+                id_vendedor: vendedor.id_vendedor,
+                nome: vendedor.nome,
+                telefone: vendedor.telefone,
+                observacoes: vendedor.observacoes
+            }
+        }
+
+        return {
+            id_vendedor: undefined,
+            nome: '',
+            telefone: '',
+            observacoes: ''
+        }
+    }
 
     const mutation = useMutation({
         mutationFn: (vendedor: IVendedor) => VendedorService.salvarVendedor(vendedor),

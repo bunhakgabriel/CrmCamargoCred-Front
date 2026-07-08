@@ -7,7 +7,7 @@ export default function AcoesGridVendedores(
     props: ICellRendererParams<IVendedor> &
     {
         setVendedorDelete: (vendedor: IVendedor) => void,
-        setVendedorEdit: (vendedor: IVendedor) => void,
+        handleEditVendedor: (id: number) => void,
     }
 ) {
 
@@ -18,8 +18,10 @@ export default function AcoesGridVendedores(
     };
 
     const handleEdit = () => {
-        if (props.data) {
-            props.setVendedorEdit(props.data);
+        const idVendedor = props?.data?.id_vendedor
+
+        if (idVendedor) {
+            props.handleEditVendedor(idVendedor);
         }
     };
 
