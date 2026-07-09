@@ -6,7 +6,7 @@ import { useForm, type Resolver, FormProvider } from "react-hook-form";
 import { clienteSchema, type IClienteForm } from "./schema/ClienteSchema";
 import type { ICliente } from "../../interfaces/ICliente";
 import { parseClienteRequest, parseClienteResponse } from "./parser/parseCliente";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import ClienteService from "./services/clienteService";
 import { toast } from "sonner";
 import clsx from "clsx";
@@ -17,6 +17,7 @@ import InformacoesAdicionais from "./etapas/etapa-4/InformacoesAdicionais";
 import Documentos from "./etapas/etapa-5/Documentos";
 import type { ArquivoUpload } from "../../types/ArquivoUpload";
 import { useEffect } from "react";
+import VendedorService from "../cadastro-vendedores/service/vendedorService";
 
 type cadastroClienteProps = {
     cliente?: ICliente & { documentos?: ArquivoUpload[] } | null
@@ -62,6 +63,18 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
     }
 
     const { handleSubmit, reset } = form
+
+    const { data } = useQuery({
+        queryKey: ["vendedores"],
+        queryFn: () => {
+            return VendedorService.buscarVendedores({ skip: 0, take: 50 });
+        },
+        refetchOnWindowFocus: false,
+    });
+
+    const vendedores = data?.data
+        .filter(x => x.id_vendedor)
+        .map(x => ({ value: x.id_vendedor!, label: x.nome })) || []; 
 
     const mutation = useMutation({
         mutationFn: ({ cliente }: { cliente: ICliente, documentos: ArquivoUpload[] }) => ClienteService.salvarCliente(cliente),
@@ -154,7 +167,7 @@ export default function CadastroCliente({ cliente, onCloseModal, resetGrid }: ca
 
                     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-10">
 
-                        <InformacoesBasicas />
+                        <InformacoesBasicas vendedores={vendedores} />
                         <InformacoesBancarias />
                         <InformacoesContato />
                         <InformacoesAdicionais />

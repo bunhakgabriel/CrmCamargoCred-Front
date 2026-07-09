@@ -5,7 +5,11 @@ import Select from 'react-select';
 import { type IClienteForm } from "../../schema/ClienteSchema";
 import { mask } from "../../../../utils/masks";
 
-export default function InformacoesBasicas() {
+type InformacoesBasicasProps = {
+    vendedores: { value: number, label: string }[]
+};
+
+export default function InformacoesBasicas({ vendedores }: InformacoesBasicasProps) {
 
     const { register, formState: { errors }, control, getValues } = useFormContext<IClienteForm>();
     const idCliente = getValues('id_cliente')
@@ -31,6 +35,29 @@ export default function InformacoesBasicas() {
                     error={errors.nome}
                     maxLength={100}
                     mask={(value) => mask(value, 'apenasLetras')}
+                />
+                <Controller
+                    name="vendedor"
+                    rules={{ required: false }}
+                    control={control}
+                    render={({ field }) => (
+                        <div className="flex flex-col gap-1 w-full">
+                            <label className="text-xs text-gray-700">Vendedor</label>
+                            <Select<OptionSelectNumber>
+                                {...field}
+                                options={vendedores}
+                                isClearable
+                                placeholder="Selecione"
+                                onChange={(option) => field.onChange(option?.value)}
+                                value={
+                                    vendedores.find(opt => opt.value === field.value) || null
+                                }
+                            />
+                            {errors.vendedor && (
+                                <span className="text-red-500 text-xs">{errors.vendedor?.message}</span>
+                            )}
+                        </div>
+                    )}
                 />
             </div>
 
