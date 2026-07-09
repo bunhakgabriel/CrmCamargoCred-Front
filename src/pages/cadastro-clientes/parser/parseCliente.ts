@@ -19,7 +19,7 @@ export function parseClienteRequest(data: IClienteForm): ICliente {
         data_nascimento: data.data_nascimento ? parseDateRequest(data.data_nascimento) : undefined,
         naturalidade: data.naturalidade || undefined,
         nacionalidade: data.nacionalidade || undefined,
-        rg: data.rg,
+        rg: data.rg || undefined,
         data_emissao_rg: data.data_emissao_rg ? parseDateRequest(data.data_emissao_rg) : undefined,
         orgao_emissor_rg: data.orgao_emissor_rg || undefined,
         uf_rg: data.uf_rg || undefined,

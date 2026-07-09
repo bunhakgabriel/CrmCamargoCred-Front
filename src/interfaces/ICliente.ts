@@ -38,7 +38,7 @@ export interface ICliente {
     data_nascimento?: Date 
     naturalidade?: string 
     nacionalidade?: number 
-    rg: string 
+    rg?: string 
     data_emissao_rg?: Date 
     orgao_emissor_rg?: string 
     uf_rg?: string 
