@@ -70,3 +70,45 @@ O projeto está em evolução contínua e possui planos para incorporar novas fu
 
 * **Variáveis de ambiente** — configuração de parâmetros específicos para os diferentes ambientes da aplicação, permitindo utilizar a API localmente durante o desenvolvimento e a API de produção quando publicada.
 
+## 🏗️ Arquitetura
+
+O frontend foi organizado buscando separar as responsabilidades da aplicação e facilitar a reutilização de componentes e a manutenção do código.
+
+A estrutura principal do projeto é organizada da seguinte forma:
+
+```text
+src/
+├── api/             # Configuração e comunicação com a API
+├── componentes/     # Componentes reutilizáveis em diferentes páginas
+├── firebase/        # Configurações e integração com o Firebase
+├── interfaces/      # Interfaces utilizadas pela aplicação
+├── pages/           # Páginas e funcionalidades da aplicação
+├── routes/          # Configuração das rotas
+├── services/        # Serviços e regras de comunicação da aplicação
+├── store/           # Gerenciamento de estado global
+├── types/           # Tipagens utilizadas no projeto
+└── utils/           # Funções utilitárias
+```
+
+### Organização das páginas
+
+Cada página possui sua própria estrutura e pode conter componentes específicos daquela funcionalidade.
+
+```text
+pages/
+├── Clientes/
+│   ├── componentes/
+│   └── Clientes.tsx
+│
+├── Dashboard/
+├── Vendedores/
+├── cadastro-clientes/
+├── cadastro-vendedores/
+└── login/
+```
+
+Os componentes localizados em `src/componentes` são destinados a elementos reutilizáveis por diferentes páginas da aplicação. Já os componentes dentro de `pages/<pagina>/componentes` são específicos daquela funcionalidade e não precisam fazer parte da estrutura global de componentes.
+
+Essa organização permite manter componentes específicos próximos da funcionalidade que os utiliza, enquanto componentes compartilhados permanecem centralizados e disponíveis para toda a aplicação.
+
+
