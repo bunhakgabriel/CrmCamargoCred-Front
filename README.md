@@ -155,3 +155,20 @@ Diferentemente de aplicações hospedadas em plataformas gerenciadas, o CRM est�
 O sistema permanece disponível **24/7** para utilização pelos funcionários autorizados.
 
 **Aplicação:** http://crmcamargocred.fun/
+
+
+## 🎬 Demonstração
+
+Abaixo estão algumas telas da aplicação, apresentando parte do fluxo de utilização do CRM.
+
+### 📊 Autenticação
+
+![Dashboard do CRM Camaro Cred](URL_DA_IMAGEM_1)
+
+### 👥 Gestão de clientes
+
+![Gestão de clientes do CRM Camaro Cred](URL_DA_IMAGEM_2)
+
+### 👨‍💼 Gestão de vendedores
+
+![Gestão de vendedores do CRM Camaro Cred](URL_DA_IMAGEM_3)
