@@ -126,3 +126,22 @@ Outro ponto importante foi utilizar o **TanStack Query** para gerenciar os dados
 
 A integração entre o TanStack Query, os serviços responsáveis pelas chamadas à API e as grids permitiu manter os dados apresentados na interface sincronizados com o backend, além de proporcionar um gerenciamento mais eficiente das requisições realizadas pela aplicação.
 
+## 👨‍💻 Minha atuação no projeto
+
+Fui responsável pelo desenvolvimento completo do frontend da aplicação, desde a implementação das interfaces e funcionalidades até sua integração com o backend.
+
+Diferentemente de projetos em que as decisões sobre o produto partiram de mim, neste projeto o desenvolvimento foi orientado pelas necessidades e requisitos apresentados pelo escritório. Ao longo da utilização do sistema, novos requisitos e ajustes foram identificados, e fui responsável por analisar essas necessidades e implementá-las na aplicação.
+
+Minha atuação incluiu:
+
+- Desenvolvimento completo do frontend utilizando React e TypeScript.
+- Implementação das interfaces e fluxos de utilização do sistema.
+- Desenvolvimento dos formulários de cadastro e gerenciamento de clientes e vendedores.
+- Implementação da autenticação e controle de acesso no frontend.
+- Integração com a API do backend.
+- Implementação das tabelas, paginação e filtros utilizando AG Grid.
+- Gerenciamento dos dados e requisições utilizando TanStack Query.
+- Implementação do upload e gerenciamento dos documentos na interface.
+- Adaptação e evolução do sistema conforme novos requisitos e necessidades do escritório.
+- Correção e ajustes de funcionalidades conforme o sistema passou a ser utilizado em produção.
+
