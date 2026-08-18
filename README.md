@@ -176,3 +176,12 @@ Abaixo estão algumas telas da aplicação, apresentando parte do fluxo de utili
 ### 👨‍💼 Gestão de vendedores
 
 ![Gestão de vendedores do CRM Camaro Cred](./public/tela-4.png)
+
+
+## 📝 Observações
+
+Este repositório contém o frontend do CRM Camaro Cred.
+
+O backend da aplicação está disponível em um repositório separado:
+
+- **Backend:** [CRM Camaro Cred — Backend](https://github.com/bunhakgabriel/CrmCamargoCred-Back)
