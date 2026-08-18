@@ -145,3 +145,13 @@ Minha atuação incluiu:
 - Adaptação e evolução do sistema conforme novos requisitos e necessidades do escritório.
 - Correção e ajustes de funcionalidades conforme o sistema passou a ser utilizado em produção.
 
+
+## 🚀 Ambiente de produção
+
+A aplicação está em produção e é utilizada diariamente pelo escritório para gerenciamento de clientes e vendedores.
+
+Diferentemente de aplicações hospedadas em plataformas gerenciadas, o CRM está hospedado em uma **VPS sob minha administração**, sendo de minha responsabilidade o gerenciamento do ambiente, realização dos deploys e manutenção da disponibilidade da aplicação.
+
+O sistema permanece disponível **24/7** para utilização pelos funcionários autorizados.
+
+**Aplicação:** http://crmcamargocred.fun/
