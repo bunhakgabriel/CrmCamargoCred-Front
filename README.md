@@ -49,3 +49,24 @@ O projeto está em evolução contínua e possui planos para incorporar novas fu
 * Upload de documentos vinculados aos clientes.
 * Visualização dos documentos armazenados.
 * Download dos documentos quando necessário.
+
+
+## 🛠️ Tecnologias
+
+### Frontend
+
+* **React** — desenvolvimento da interface da aplicação.
+* **TypeScript** — tipagem estática e maior segurança durante o desenvolvimento.
+* **Tailwind CSS** — estilização e construção da interface.
+* **AG Grid React** — exibição e gerenciamento de dados em tabelas.
+* **Axios** — comunicação com a API do backend.
+* **React Hook Form** — gerenciamento dos formulários.
+* **Yup** — validação dos dados dos formulários.
+* **Zustand** — gerenciamento de estado da aplicação.
+* **TanStack Query** — gerenciamento de requisições, cache e dados provenientes da API.
+* **Firebase** — integração com os serviços do Firebase, incluindo autenticação com contas Google.
+
+### Configuração
+
+* **Variáveis de ambiente** — configuração de parâmetros específicos para os diferentes ambientes da aplicação, permitindo utilizar a API localmente durante o desenvolvimento e a API de produção quando publicada.
+
