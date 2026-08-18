@@ -84,7 +84,7 @@ src/
 ├── interfaces/      # Interfaces utilizadas pela aplicação
 ├── pages/           # Páginas e funcionalidades da aplicação
 ├── routes/          # Configuração das rotas
-├── services/        # Serviços e regras de comunicação da aplicação
+├── services/        # Funções responsáveis pelas chamadas aos endpoints da API
 ├── store/           # Gerenciamento de estado global
 ├── types/           # Tipagens utilizadas no projeto
 └── utils/           # Funções utilitárias
