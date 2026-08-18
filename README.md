@@ -163,12 +163,16 @@ Abaixo estão algumas telas da aplicação, apresentando parte do fluxo de utili
 
 ### 📊 Autenticação
 
-![Dashboard do CRM Camaro Cred](URL_DA_IMAGEM_1)
+![Autenticação](./public/tela-1.png)
 
-### 👥 Gestão de clientes
+### 👥 Cadastro de clientes
 
-![Gestão de clientes do CRM Camaro Cred](URL_DA_IMAGEM_2)
+![Cadastro de clientes do CRM Camaro Cred](./public/tela-2.png)
+
+### 👨‍💼 Gestão de clientes
+
+![Gestão de clientes do CRM Camaro Cred](./public/tela-3.png)
 
 ### 👨‍💼 Gestão de vendedores
 
-![Gestão de vendedores do CRM Camaro Cred](URL_DA_IMAGEM_3)
+![Gestão de vendedores do CRM Camaro Cred](./public/tela-4.png)
