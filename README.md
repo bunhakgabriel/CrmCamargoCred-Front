@@ -112,3 +112,17 @@ Os componentes localizados em `src/componentes` são destinados a elementos reut
 Essa organização permite manter componentes específicos próximos da funcionalidade que os utiliza, enquanto componentes compartilhados permanecem centralizados e disponíveis para toda a aplicação.
 
 
+## 🧩 Principais desafios técnicos
+
+### 📊 Integração do AG Grid com a API
+
+Um dos desafios do desenvolvimento do frontend foi integrar o **AG Grid** ao backend de forma eficiente para trabalhar com os dados de clientes e vendedores.
+
+A implementação envolveu recursos como **paginação, filtros e carregamento dos dados através da API**, evitando a necessidade de carregar todos os registros de uma só vez.
+
+### ⚡ Gerenciamento dos dados com TanStack Query
+
+Outro ponto importante foi utilizar o **TanStack Query** para gerenciar os dados provenientes da API, trabalhando com recursos como **cache, controle de carregamento, atualização e invalidação dos dados**.
+
+A integração entre o TanStack Query, os serviços responsáveis pelas chamadas à API e as grids permitiu manter os dados apresentados na interface sincronizados com o backend, além de proporcionar um gerenciamento mais eficiente das requisições realizadas pela aplicação.
+
